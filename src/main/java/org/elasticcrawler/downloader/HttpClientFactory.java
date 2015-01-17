@@ -16,7 +16,7 @@ import org.apache.http.protocol.HttpContext;
 import org.elasticcrawler.core.Site;
 
 /**
- * Created by baizz on 2015-1-17.
+ * Created by dolphineor on 2015-1-17.
  */
 public class HttpClientFactory {
 

@@ -1,4 +1,4 @@
-package org.dolphineor.queue;
+package org.elasticcrawler;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
@@ -6,7 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Created by baizz on 2015-1-17.
+ * Created by dolphineor on 2015-1-17.
  */
 public class ConcurrentLinkedQueueTest {
     private static int taskNum = 2;   // 任务数量
@@ -14,8 +14,7 @@ public class ConcurrentLinkedQueueTest {
     private static ConcurrentLinkedQueue<Integer> queue = new ConcurrentLinkedQueue<>();
 
     public static void init() {
-//        int count = 1_000_000;
-        int count = 100;
+        int count = 1_000_000;
         for (int i = 0; i < count; i++) {
             queue.offer(i);
         }
@@ -38,7 +37,4 @@ public class ConcurrentLinkedQueueTest {
         service.shutdown();
     }
 
-    public static ConcurrentLinkedQueue<Integer> getQueue() {
-        return queue;
-    }
 }

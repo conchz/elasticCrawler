@@ -1,10 +1,7 @@
 package org.elasticcrawler.core;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 /**
- * Created by baizz on 2015-1-17.
+ * Created by dolphineor on 2015-1-17.
  */
 public class Site {
 
@@ -31,9 +28,9 @@ public class Site {
     }
 
     /**
-     * get user agent
+     * get userAgent
      *
-     * @return user agent
+     * @return userAgent
      */
     public String getUserAgent() {
         return userAgent;

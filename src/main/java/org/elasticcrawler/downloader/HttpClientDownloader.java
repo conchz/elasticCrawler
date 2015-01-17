@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Created by baizz on 2015-1-17.
+ * Created by dolphineor on 2015-1-17.
  */
 public class HttpClientDownloader {
 

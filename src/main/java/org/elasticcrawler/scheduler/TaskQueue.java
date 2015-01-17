@@ -6,7 +6,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Created by baizz on 2015-1-17.
+ * Created by dolphineor on 2015-1-17.
+ * <p>
+ * 任务队列
  */
 public class TaskQueue {
 
