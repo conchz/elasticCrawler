@@ -17,6 +17,11 @@ public class KissyDownloader implements Downloader {
         return null;
     }
 
+    @Override
+    public String getName() {
+        return KISSY_DOWNLOADER;
+    }
+
     /**
      * based on phantomjs
      */

@@ -15,4 +15,9 @@ public class HtmlUnitDownloader implements Downloader {
     public String download(Task task) throws IOException {
         return null;
     }
+
+    @Override
+    public String getName() {
+        return HTML_UNIT_DOWNLOADER;
+    }
 }

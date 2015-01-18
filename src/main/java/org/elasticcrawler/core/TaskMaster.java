@@ -1,16 +1,17 @@
 package org.elasticcrawler.core;
 
 import org.elasticcrawler.downloader.Downloader;
-import org.elasticcrawler.downloader.DownloaderTypes;
-import org.elasticcrawler.downloader.HttpClientDownloader;
-import org.elasticcrawler.extractor.Handler;
+import org.elasticcrawler.extractor.Extractor;
 import org.elasticcrawler.extractor.HtmlExtractor;
 import org.elasticcrawler.extractor.Page;
 import org.elasticcrawler.scheduler.TaskQueue;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.StampedLock;
 
 /**
@@ -22,15 +23,13 @@ public class TaskMaster implements Runnable {
 
     private TaskQueue taskQueue = new TaskQueue();
 
-    private ConcurrentHashMap<String, Downloader> downloader = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Downloader> downloaderMap = new ConcurrentHashMap<>();
 
-    private Handler handler = new HtmlExtractor();
+    private Extractor extractor = new HtmlExtractor();
 
     private int threadNum = 1;
 
     private boolean isAsync;
-
-    private CountDownLatch latch;
 
 
     @Override
@@ -44,7 +43,7 @@ public class TaskMaster implements Runnable {
                 if (result == null)
                     break;
 
-                handler.handle(new Page(result));
+                extractor.extract(new Page(result));
             }
         });
 
@@ -67,13 +66,6 @@ public class TaskMaster implements Runnable {
     }
 
     private void init() {
-        downloader.put(DownloaderTypes.HTTP_CLIENT_DOWNLOADER, new HttpClientDownloader());
-        latch = new CountDownLatch(threadNum);
-    }
-
-    public TaskMaster addDownloader(Downloader downloader) {
-        this.downloader.putIfAbsent(DownloaderTypes.HTTP_CLIENT_DOWNLOADER, downloader);
-        return this;
     }
 
     private String processRequest() {
@@ -81,7 +73,8 @@ public class TaskMaster implements Runnable {
 
         if (task != null) {
             try {
-                return downloader.get(DownloaderTypes.HTTP_CLIENT_DOWNLOADER).download(task);
+                Downloader downloader = downloaderMap.putIfAbsent(task.getDownloader().getName(), task.getDownloader());
+                return downloader.download(task);
             } catch (IOException e) {
                 e.printStackTrace();
             }

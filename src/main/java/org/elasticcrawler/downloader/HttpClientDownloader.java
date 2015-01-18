@@ -34,6 +34,7 @@ public class HttpClientDownloader implements Downloader {
         return httpClients.computeIfAbsent(url, k -> httpClientFactory.createHttpClient(task));
     }
 
+    @Override
     public String download(Task task) throws IOException {
         CloseableHttpClient httpClient = getHttpClient(task);
         CookieStore cookieStore = new BasicCookieStore();
@@ -42,5 +43,10 @@ public class HttpClientDownloader implements Downloader {
         try (CloseableHttpResponse response = httpClient.execute(new HttpGet(task.getUrl()), localContext)) {
             return EntityUtils.toString(response.getEntity(), Charset.forName(task.getCharset()));
         }
+    }
+
+    @Override
+    public String getName() {
+        return DEFAULT_DOWNLOADER;
     }
 }

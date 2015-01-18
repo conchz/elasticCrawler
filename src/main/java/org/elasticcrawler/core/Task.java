@@ -1,5 +1,9 @@
 package org.elasticcrawler.core;
 
+import org.elasticcrawler.downloader.Downloader;
+import org.elasticcrawler.extractor.Extractor;
+import org.elasticcrawler.handler.Handler;
+
 /**
  * Created by dolphineor on 2015-1-18.
  */
@@ -14,6 +18,12 @@ public class Task {
     private int retryTimes = 0;
 
     private boolean useGzip = true;
+
+    private Downloader downloader;
+
+    private Extractor extractor;
+
+    private Handler handler;
 
 
     public String getUrl() {
@@ -59,5 +69,29 @@ public class Task {
     public Task setUseGzip(boolean useGzip) {
         this.useGzip = useGzip;
         return this;
+    }
+
+    public Downloader getDownloader() {
+        return downloader;
+    }
+
+    public void setDownloader(Downloader downloader) {
+        this.downloader = downloader;
+    }
+
+    public Extractor getExtractor() {
+        return extractor;
+    }
+
+    public void setExtractor(Extractor extractor) {
+        this.extractor = extractor;
+    }
+
+    public Handler getHandler() {
+        return handler;
+    }
+
+    public void setHandler(Handler handler) {
+        this.handler = handler;
     }
 }
