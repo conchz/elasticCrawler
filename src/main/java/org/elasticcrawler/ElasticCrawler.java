@@ -7,7 +7,7 @@ import org.elasticcrawler.core.TaskMaster;
 import java.util.List;
 
 /**
- * Created by baizz on 2015-1-18.
+ * Created by dolphineor on 2015-1-18.
  */
 public class ElasticCrawler {
 

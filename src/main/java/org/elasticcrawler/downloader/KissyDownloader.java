@@ -16,4 +16,10 @@ public class KissyDownloader implements Downloader {
     public String download(Task task) throws IOException {
         return null;
     }
+
+    /**
+     * based on phantomjs
+     */
+    static final class JavascriptHelper {
+    }
 }

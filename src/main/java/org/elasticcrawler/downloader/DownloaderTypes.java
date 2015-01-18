@@ -1,7 +1,7 @@
 package org.elasticcrawler.downloader;
 
 /**
- * Created by baizz on 2015-1-18.
+ * Created by dolphineor on 2015-1-18.
  */
 public class DownloaderTypes {
 
