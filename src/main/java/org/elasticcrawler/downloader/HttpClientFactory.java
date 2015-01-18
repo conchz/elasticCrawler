@@ -13,7 +13,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HttpContext;
-import org.elasticcrawler.core.Site;
+import org.elasticcrawler.core.Task;
 
 /**
  * Created by dolphineor on 2015-1-17.
@@ -37,18 +37,18 @@ public class HttpClientFactory {
         return this;
     }
 
-    public CloseableHttpClient createHttpClient(Site site) {
-        return generateClient(site);
+    public CloseableHttpClient createHttpClient(Task task) {
+        return generateClient(task);
     }
 
-    private CloseableHttpClient generateClient(Site site) {
+    private CloseableHttpClient generateClient(Task task) {
         HttpClientBuilder httpClientBuilder = HttpClients.custom().setConnectionManager(connectionManager);
-        if (site != null && site.getUserAgent() != null) {
-            httpClientBuilder.setUserAgent(site.getUserAgent());
+        if (task.getUserAgent() != null) {
+            httpClientBuilder.setUserAgent(task.getUserAgent());
         } else {
             httpClientBuilder.setUserAgent("");
         }
-        if (site == null || site.isUseGzip()) {
+        if (task.isUseGzip()) {
             httpClientBuilder.addInterceptorFirst((HttpRequest request, HttpContext context) -> {
                 if (!request.containsHeader("Accept-Encoding")) {
                     request.addHeader("Accept-Encoding", "gzip");
@@ -57,10 +57,8 @@ public class HttpClientFactory {
             });
         }
         SocketConfig socketConfig = SocketConfig.custom().setSoKeepAlive(true).setTcpNoDelay(true).build();
-        httpClientBuilder.setDefaultSocketConfig(socketConfig);
-        if (site != null) {
-            httpClientBuilder.setRetryHandler(new DefaultHttpRequestRetryHandler(site.getRetryTimes(), true));
-        }
+        httpClientBuilder.setDefaultSocketConfig(socketConfig)
+                .setRetryHandler(new DefaultHttpRequestRetryHandler(task.getRetryTimes(), true));
         return httpClientBuilder.build();
     }
 
