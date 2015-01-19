@@ -11,6 +11,7 @@ import java.io.IOException;
  */
 public class KissyDownloader implements Downloader {
 
+    private static Downloader downloader = null;
 
     @Override
     public String download(Task task) throws IOException {
@@ -20,6 +21,17 @@ public class KissyDownloader implements Downloader {
     @Override
     public String getName() {
         return KISSY_DOWNLOADER;
+    }
+
+    public static Downloader create() {
+        // DCL
+        if (downloader == null) {
+            synchronized (KissyDownloader.class) {
+                if (downloader == null)
+                    downloader = new KissyDownloader();
+            }
+        }
+        return downloader;
     }
 
     /**

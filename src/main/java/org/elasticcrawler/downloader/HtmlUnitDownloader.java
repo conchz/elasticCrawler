@@ -11,6 +11,8 @@ import java.io.IOException;
  */
 public class HtmlUnitDownloader implements Downloader {
 
+    private static Downloader downloader = null;
+
     @Override
     public String download(Task task) throws IOException {
         return null;
@@ -19,5 +21,16 @@ public class HtmlUnitDownloader implements Downloader {
     @Override
     public String getName() {
         return HTML_UNIT_DOWNLOADER;
+    }
+
+    public static Downloader create() {
+        // DCL
+        if (downloader == null) {
+            synchronized (HtmlUnitDownloader.class) {
+                if (downloader == null)
+                    downloader = new HtmlUnitDownloader();
+            }
+        }
+        return downloader;
     }
 }

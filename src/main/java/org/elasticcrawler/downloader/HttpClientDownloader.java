@@ -22,7 +22,9 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class HttpClientDownloader implements Downloader {
 
-    private Logger logger = LoggerFactory.getLogger(HttpClientDownloader.class);
+    private static Logger logger = LoggerFactory.getLogger(HttpClientDownloader.class);
+
+    private static Downloader downloader = null;
 
     private final ConcurrentHashMap<String, CloseableHttpClient> httpClients = new ConcurrentHashMap<>();
 
@@ -48,5 +50,16 @@ public class HttpClientDownloader implements Downloader {
     @Override
     public String getName() {
         return DEFAULT_DOWNLOADER;
+    }
+
+    public static Downloader create() {
+        // DCL
+        if (downloader == null) {
+            synchronized (HttpClientDownloader.class) {
+                if (downloader == null)
+                    downloader = new HttpClientDownloader();
+            }
+        }
+        return downloader;
     }
 }
