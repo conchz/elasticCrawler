@@ -29,6 +29,7 @@ public class HttpClientFactory {
                 .register("https", SSLConnectionSocketFactory.getSocketFactory())
                 .build();
         connectionManager = new PoolingHttpClientConnectionManager(registry);
+        connectionManager.setMaxTotal(100);
         connectionManager.setDefaultMaxPerRoute(100);
     }
 

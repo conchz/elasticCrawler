@@ -28,10 +28,13 @@ public class HttpClientDownloader implements Downloader {
 
     private final ConcurrentHashMap<String, CloseableHttpClient> httpClients = new ConcurrentHashMap<>();
 
-    private HttpClientFactory httpClientFactory = new HttpClientFactory().setPoolSize(32);
+    private HttpClientFactory httpClientFactory = new HttpClientFactory();
 
 
-    public CloseableHttpClient getHttpClient(Task task) {
+    private HttpClientDownloader() {
+    }
+
+    private CloseableHttpClient getHttpClient(Task task) {
         String url = task.getUrl();
         return httpClients.computeIfAbsent(url, k -> httpClientFactory.createHttpClient(task));
     }

@@ -1,4 +1,7 @@
-package org.elasticcrawler.core;
+package org.elasticcrawler;
+
+import org.elasticcrawler.core.Task;
+import org.elasticcrawler.core.Worker;
 
 /**
  * Created by dolphineor on 2015-1-17.
