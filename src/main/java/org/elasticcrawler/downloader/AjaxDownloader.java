@@ -10,26 +10,26 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Created by dolphineor on 2015-1-17.
- * <p>
- * 基于淘宝的定制型下载器(淘宝采用的是KISSY javascript框架, htmlUnit无法识别到)
+ * Created by dolphineor on 2015-1-20.
  */
-public class KissyDownloader implements Downloader {
+public class AjaxDownloader implements Downloader {
 
+    private static final String PHANTOMJS = "phantomjs";
+
+    private static Path scriptPath = null;
     private static Downloader downloader = null;
 
 
-    private KissyDownloader() {
+    private AjaxDownloader() {
+        init();
     }
 
     @Override
     public String download(Task task) throws IOException {
-        Path scriptPath = JavascriptHelper.getScriptPath();
-        String cmd = "phantomjs " + scriptPath + " " + task.getUrl();
+        String cmd = PHANTOMJS + " " + scriptPath + " " + task.getUrl();
         Process process = Runtime.getRuntime().exec(cmd);
 
         StringBuilder html = new StringBuilder("");
-
         BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
         br.lines().forEach(html::append);
         return html.toString();
@@ -37,19 +37,34 @@ public class KissyDownloader implements Downloader {
 
     @Override
     public String getName() {
-        return KISSY_DOWNLOADER;
+        return AJAX_DOWNLOADER;
+    }
+
+    private void init() {
+        if (scriptPath == null) {
+            synchronized (this) {
+                if (scriptPath == null) {
+                    try {
+                        scriptPath = JavascriptHelper.getScriptPath();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
     public static Downloader create() {
         // DCL
         if (downloader == null) {
-            synchronized (KissyDownloader.class) {
+            synchronized (AjaxDownloader.class) {
                 if (downloader == null)
-                    downloader = new KissyDownloader();
+                    downloader = new AjaxDownloader();
             }
         }
         return downloader;
     }
+
 
     /**
      * based on phantomjs
@@ -95,4 +110,5 @@ public class KissyDownloader implements Downloader {
         }
 
     }
+
 }
