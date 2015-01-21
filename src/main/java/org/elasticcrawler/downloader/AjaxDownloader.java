@@ -29,10 +29,11 @@ public class AjaxDownloader implements Downloader {
         String cmd = PHANTOMJS + " " + scriptPath + " " + task.getUrl();
         Process process = Runtime.getRuntime().exec(cmd);
 
-        StringBuilder html = new StringBuilder("");
-        BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        br.lines().forEach(html::append);
-        return html.toString();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            StringBuilder html = new StringBuilder();
+            br.lines().parallel().forEach(html::append);
+            return html.toString();
+        }
     }
 
     @Override
