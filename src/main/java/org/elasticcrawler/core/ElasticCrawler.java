@@ -1,9 +1,9 @@
-package org.elasticcrawler;
+package org.elasticcrawler.core;
 
-import org.elasticcrawler.core.Task;
-import org.elasticcrawler.core.TaskMaster;
 import org.elasticcrawler.downloader.AjaxDownloader;
 import org.elasticcrawler.extractor.HtmlExtractor;
+import org.elasticcrawler.scheduler.Task;
+import org.elasticcrawler.scheduler.TaskMaster;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;

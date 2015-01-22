@@ -1,4 +1,4 @@
-package org.elasticcrawler.core;
+package org.elasticcrawler.scheduler;
 
 import org.elasticcrawler.downloader.Downloader;
 import org.elasticcrawler.extractor.Extractor;

@@ -9,7 +9,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
-import org.elasticcrawler.core.Task;
+import org.elasticcrawler.scheduler.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,7 +1,6 @@
-package org.elasticcrawler.core;
+package org.elasticcrawler.scheduler;
 
-import org.elasticcrawler.scheduler.Scheduler;
-import org.elasticcrawler.scheduler.TaskQueue;
+import org.elasticcrawler.core.Worker;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

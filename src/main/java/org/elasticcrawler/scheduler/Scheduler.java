@@ -1,7 +1,5 @@
 package org.elasticcrawler.scheduler;
 
-import org.elasticcrawler.core.Task;
-
 import java.util.List;
 
 /**

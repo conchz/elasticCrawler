@@ -1,6 +1,6 @@
 package org.elasticcrawler;
 
-import org.elasticcrawler.core.Task;
+import org.elasticcrawler.scheduler.Task;
 import org.elasticcrawler.core.Worker;
 
 /**

@@ -1,12 +1,15 @@
 package org.elasticcrawler.core;
 
 import org.elasticcrawler.extractor.Page;
+import org.elasticcrawler.scheduler.Task;
 import org.elasticcrawler.scheduler.TaskQueue;
 
 import java.io.IOException;
 
 /**
  * Created by dolphineor on 2015-1-17.
+ * <p>
+ * worker负责爬取
  */
 public class Worker implements Runnable {
 
