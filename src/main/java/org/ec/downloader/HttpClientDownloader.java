@@ -1,4 +1,4 @@
-package org.elasticcrawler.downloader;
+package org.ec.downloader;
 
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -9,7 +9,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
-import org.elasticcrawler.scheduler.Task;
+import org.ec.scheduler.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

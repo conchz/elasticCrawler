@@ -1,4 +1,4 @@
-package org.elasticcrawler.extractor;
+package org.ec.extractor;
 
 /**
  * Created by dolphineor on 2015-1-18.

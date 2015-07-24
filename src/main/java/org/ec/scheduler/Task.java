@@ -1,8 +1,8 @@
-package org.elasticcrawler.scheduler;
+package org.ec.scheduler;
 
-import org.elasticcrawler.downloader.Downloader;
-import org.elasticcrawler.extractor.Extractor;
-import org.elasticcrawler.handler.Handler;
+import org.ec.downloader.Downloader;
+import org.ec.extractor.Extractor;
+import org.ec.handler.Handler;
 
 /**
  * Created by dolphineor on 2015-1-18.

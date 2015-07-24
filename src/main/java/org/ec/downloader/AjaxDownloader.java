@@ -1,6 +1,6 @@
-package org.elasticcrawler.downloader;
+package org.ec.downloader;
 
-import org.elasticcrawler.scheduler.Task;
+import org.ec.scheduler.Task;
 
 import java.io.BufferedReader;
 import java.io.IOException;

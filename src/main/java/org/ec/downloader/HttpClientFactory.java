@@ -1,4 +1,4 @@
-package org.elasticcrawler.downloader;
+package org.ec.downloader;
 
 import org.apache.http.HttpRequest;
 import org.apache.http.config.Registry;
@@ -13,7 +13,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HttpContext;
-import org.elasticcrawler.scheduler.Task;
+import org.ec.scheduler.Task;
 
 /**
  * Created by dolphineor on 2015-1-17.

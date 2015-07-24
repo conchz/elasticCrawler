@@ -1,6 +1,6 @@
-package org.elasticcrawler;
+package org.ec;
 
-import org.elasticcrawler.core.Worker;
+import org.ec.core.Worker;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;

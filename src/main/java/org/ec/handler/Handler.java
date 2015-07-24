@@ -1,4 +1,4 @@
-package org.elasticcrawler.handler;
+package org.ec.handler;
 
 /**
  * Created by dolphineor on 2015-1-18.

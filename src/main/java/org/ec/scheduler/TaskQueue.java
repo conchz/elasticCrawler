@@ -1,6 +1,7 @@
-package org.elasticcrawler.scheduler;
+package org.ec.scheduler;
 
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.StampedLock;
 
 /**
@@ -10,7 +11,7 @@ import java.util.concurrent.locks.StampedLock;
  */
 public class TaskQueue {
 
-    private final ConcurrentLinkedQueue<Task> queue = new ConcurrentLinkedQueue<>();
+    private final BlockingQueue<Task> queue = new LinkedBlockingQueue<>();
 
     private final StampedLock lock = new StampedLock();
 

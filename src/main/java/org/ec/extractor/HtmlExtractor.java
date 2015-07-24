@@ -1,4 +1,4 @@
-package org.elasticcrawler.extractor;
+package org.ec.extractor;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

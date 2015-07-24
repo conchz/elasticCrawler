@@ -1,7 +1,7 @@
-package org.elasticcrawler;
+package org.ec;
 
-import org.elasticcrawler.scheduler.Task;
-import org.elasticcrawler.core.Worker;
+import org.ec.scheduler.Task;
+import org.ec.core.Worker;
 
 /**
  * Created by dolphineor on 2015-1-17.

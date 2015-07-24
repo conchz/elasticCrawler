@@ -1,4 +1,4 @@
-package org.elasticcrawler.scheduler;
+package org.ec.scheduler;
 
 import java.util.List;
 

@@ -1,5 +1,6 @@
-package org.elasticcrawler;
+package org.ec;
 
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,19 +12,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class WorkerThreadPool {
 
-    private final ConcurrentLinkedQueue<Object> workers = new ConcurrentLinkedQueue<>();
+    private final Queue<Object> workers = new ConcurrentLinkedQueue<>();
 
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
-    public void v(){
-        ExecutorService executorService = Executors.newCachedThreadPool();
 
-    }
-
-    static final class WorkerThreadFactory implements ThreadFactory {
-        final ThreadGroup group;
-        final AtomicInteger threadNumber = new AtomicInteger(1);
-        final String namePrefix = "crawl-worker";
+    class WorkerThreadFactory implements ThreadFactory {
+        private final ThreadGroup group;
+        private final AtomicInteger threadNumber = new AtomicInteger(1);
+        private final String namePrefix = "crawl-worker-";
 
         public WorkerThreadFactory() {
             SecurityManager s = System.getSecurityManager();

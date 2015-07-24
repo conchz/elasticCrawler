@@ -1,4 +1,4 @@
-package org.elasticcrawler;
+package org.ec;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

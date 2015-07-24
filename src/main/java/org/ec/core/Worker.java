@@ -1,8 +1,8 @@
-package org.elasticcrawler.core;
+package org.ec.core;
 
-import org.elasticcrawler.extractor.Page;
-import org.elasticcrawler.scheduler.Task;
-import org.elasticcrawler.scheduler.TaskQueue;
+import org.ec.extractor.Page;
+import org.ec.scheduler.Task;
+import org.ec.scheduler.TaskQueue;
 
 import java.io.IOException;
 

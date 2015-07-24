@@ -1,5 +1,6 @@
-package org.elasticcrawler;
+package org.ec;
 
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -11,7 +12,7 @@ import java.util.concurrent.Executors;
 public class ConcurrentLinkedQueueTest {
     private static int taskNum = 2;   // 任务数量
     private static CountDownLatch latch = new CountDownLatch(taskNum);
-    private static ConcurrentLinkedQueue<Integer> queue = new ConcurrentLinkedQueue<>();
+    private static Queue<Integer> queue = new ConcurrentLinkedQueue<>();
 
     public static void init() {
         int count = 1_000_000;
