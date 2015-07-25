@@ -22,13 +22,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class HttpClientDownloader implements Downloader {
 
-    private static Logger logger = LoggerFactory.getLogger(HttpClientDownloader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientDownloader.class);
 
-    private static Downloader downloader = null;
+    private static Downloader downloader;
 
     private final ConcurrentHashMap<String, CloseableHttpClient> httpClients = new ConcurrentHashMap<>();
 
-    private HttpClientFactory httpClientFactory = new HttpClientFactory();
+    private final HttpClientFactory httpClientFactory = new HttpClientFactory();
 
 
     private HttpClientDownloader() {
@@ -48,11 +48,6 @@ public class HttpClientDownloader implements Downloader {
         try (CloseableHttpResponse response = httpClient.execute(new HttpGet(task.getUrl()), localContext)) {
             return EntityUtils.toString(response.getEntity(), Charset.forName(task.getCharset()));
         }
-    }
-
-    @Override
-    public String getName() {
-        return DEFAULT_DOWNLOADER;
     }
 
     public static Downloader create() {

@@ -15,7 +15,7 @@ public class TaskMaster implements Scheduler {
 
     private final StampedLock lock = new StampedLock();
 
-    private TaskQueue taskQueue = new TaskQueue();
+    private final TaskQueue taskQueue = new TaskQueue();
 
 //    private WorkerQueue workerQueue = new WorkerQueue();
 
@@ -47,9 +47,9 @@ public class TaskMaster implements Scheduler {
         return new TaskMaster();
     }
 
-    private void sleep(long time) {
+    private void sleep(long time, TimeUnit unit) {
         try {
-            TimeUnit.SECONDS.sleep(time);
+            unit.sleep(time);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -60,7 +60,6 @@ public class TaskMaster implements Scheduler {
         addTask(tasks);
     }
 
-    @Override
     public void start() {
         init();
 
@@ -70,7 +69,6 @@ public class TaskMaster implements Scheduler {
 
     }
 
-    @Override
     public void shutdown() {
         workerExecutor.shutdown();
     }

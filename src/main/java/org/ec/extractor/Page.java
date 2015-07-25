@@ -5,7 +5,7 @@ package org.ec.extractor;
  */
 public class Page {
 
-    private String html;
+    private final String html;
 
 
     public Page(String html) {
@@ -16,7 +16,4 @@ public class Page {
         return html;
     }
 
-    public void setHtml(String html) {
-        this.html = html;
-    }
 }

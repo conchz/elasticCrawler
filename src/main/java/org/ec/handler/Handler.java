@@ -6,7 +6,7 @@ package org.ec.handler;
 @FunctionalInterface
 public interface Handler {
 
-    public static final String DEFAULT_HANDLER = "DEFAULT_HANDLER";
+    String DEFAULT_HANDLER = "DEFAULT_HANDLER";
 
 
     void handle(Result result);

@@ -17,11 +17,6 @@ public class HtmlExtractor implements Extractor {
         System.out.println(page.getHtml());
     }
 
-    @Override
-    public String getName() {
-        return DEFAULT_EXTRACTOR;
-    }
-
     public static Extractor create() {
         // DCL
         if (extractor == null) {
