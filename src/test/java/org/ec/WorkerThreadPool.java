@@ -1,10 +1,6 @@
 package org.ec;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -12,20 +8,19 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class WorkerThreadPool {
 
-    private final Queue<Object> workers = new ConcurrentLinkedQueue<>();
+    private final BlockingQueue<?> workers = new LinkedBlockingQueue<>();
 
     private final ExecutorService executor = Executors.newCachedThreadPool();
 
 
     class WorkerThreadFactory implements ThreadFactory {
         private final ThreadGroup group;
-        private final AtomicInteger threadNumber = new AtomicInteger(1);
-        private final String namePrefix = "crawl-worker-";
+        private final AtomicInteger threadNumber = new AtomicInteger(0);
+        private final String namePrefix = "thread-crawler-worker-";
 
         public WorkerThreadFactory() {
             SecurityManager s = System.getSecurityManager();
-            group = (s != null) ? s.getThreadGroup() :
-                    Thread.currentThread().getThreadGroup();
+            group = (s != null) ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
         }
 
 

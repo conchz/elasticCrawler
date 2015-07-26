@@ -1,5 +1,7 @@
 package org.ec.core;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.ec.downloader.HttpClientDownloader;
 import org.ec.extractor.HtmlExtractor;
 import org.ec.scheduler.Task;
@@ -10,11 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by dolphineor on 2015-1-18.
+ *
+ * @author dolphineor
  */
 public class ElasticCrawler {
 
-    private static final String SCRAPE_URL = "http://search.jd.com/Search?keyword=%s&enc=utf-8";
+    public static final Config CONFIG = ConfigFactory.defaultApplication();
+    public static final String SCRAPE_URL = "http://search.jd.com/Search?keyword=%s&enc=utf-8";
 
     public static void main(String[] args) throws UnsupportedEncodingException {
         String[] arr = {"冬装", "毛衣", "羽绒服", "书包", "手套", "夹克", "卫衣", "暖宝宝", "围巾"};
@@ -33,8 +37,9 @@ public class ElasticCrawler {
 
         // start a elasticCrawler
         TaskMaster taskMaster = TaskMaster.build();
-        taskMaster.setWorkerThread(4).schedule(tasks);
+        taskMaster.setWorkerThread(2).schedule(tasks);
         taskMaster.start();
+        taskMaster.shutdown();
 
     }
 }

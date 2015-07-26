@@ -1,11 +1,13 @@
 package org.ec.extractor;
 
 /**
- * Created by dolphineor on 2015-1-19.
+ * the extractor for html.
+ *
+ * @author dolphineor
  */
 @FunctionalInterface
 public interface Extractor {
 
-    void extract(Page page);
+    void extract(String html);
 
 }

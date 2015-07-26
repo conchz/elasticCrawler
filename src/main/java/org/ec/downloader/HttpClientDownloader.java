@@ -9,39 +9,35 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
+import org.ec.downloader.conn.HttpClientConnectionFactory;
 import org.ec.scheduler.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Created by dolphineor on 2015-1-17.
+ * {@code HttpClientDownloader} is a implementation of {@link org.apache.http.client.HttpClient}
+ *
+ * @author dolphineor
  */
 public class HttpClientDownloader implements Downloader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientDownloader.class);
 
+    private static HttpClientConnectionFactory httpClientPool = HttpClientConnectionFactory.createPool();
+
     private static Downloader downloader;
-
-    private final ConcurrentHashMap<String, CloseableHttpClient> httpClients = new ConcurrentHashMap<>();
-
-    private final HttpClientFactory httpClientFactory = new HttpClientFactory();
 
 
     private HttpClientDownloader() {
     }
 
-    private CloseableHttpClient getHttpClient(Task task) {
-        String url = task.getUrl();
-        return httpClients.computeIfAbsent(url, k -> httpClientFactory.createHttpClient(task));
-    }
 
     @Override
     public String download(Task task) throws IOException {
-        CloseableHttpClient httpClient = getHttpClient(task);
+        CloseableHttpClient httpClient = httpClientPool.createHttpClient();
         CookieStore cookieStore = new BasicCookieStore();
         HttpContext localContext = new BasicHttpContext();
         localContext.setAttribute(HttpClientContext.COOKIE_STORE, cookieStore);

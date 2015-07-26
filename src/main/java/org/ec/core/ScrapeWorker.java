@@ -1,22 +1,21 @@
 package org.ec.core;
 
-import org.ec.extractor.Page;
 import org.ec.scheduler.Task;
 import org.ec.scheduler.TaskQueue;
 
 import java.io.IOException;
 
 /**
- * Created by dolphineor on 2015-1-17.
- * <p>
- * worker负责爬取
+ * <p>ScrapeWorker
+ *
+ * @author dolphineor
  */
-public class Worker implements Runnable {
+public class ScrapeWorker implements Runnable {
 
     private final TaskQueue taskQueue;
 
 
-    public Worker(TaskQueue taskQueue) {
+    public ScrapeWorker(TaskQueue taskQueue) {
         this.taskQueue = taskQueue;
     }
 
@@ -34,8 +33,7 @@ public class Worker implements Runnable {
 
     protected void execute(Task task) {
         try {
-            Page page = new Page(task.getDownloader().download(task));
-            task.getExtractor().extract(page);
+            task.getExtractor().extract(task.getDownloader().download(task));
         } catch (IOException e) {
             e.printStackTrace();
         }

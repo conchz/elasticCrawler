@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
  * Created by dolphineor on 2015-1-17.
  */
 public class ConcurrentLinkedQueueTest {
-    private static int taskNum = 2;   // 任务数量
+    private static int taskNum = 2;   // task number
     private static CountDownLatch latch = new CountDownLatch(taskNum);
     private static Queue<Integer> queue = new ConcurrentLinkedQueue<>();
 

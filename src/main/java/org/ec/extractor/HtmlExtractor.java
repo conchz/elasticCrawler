@@ -4,7 +4,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 /**
- * Created by dolphineor on 2015-1-18.
+ *
+ * @author dolphineor
  */
 public class HtmlExtractor implements Extractor {
 
@@ -12,13 +13,12 @@ public class HtmlExtractor implements Extractor {
 
 
     @Override
-    public void extract(Page page) {
-        Document doc = Jsoup.parse(page.getHtml());
-        System.out.println(page.getHtml());
+    public void extract(String html) {
+        Document doc = Jsoup.parse(html);
+        System.out.println(html);
     }
 
     public static Extractor create() {
-        // DCL
         if (extractor == null) {
             synchronized (HtmlExtractor.class) {
                 if (extractor == null)

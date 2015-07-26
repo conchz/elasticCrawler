@@ -1,11 +1,13 @@
 package org.ec.handler;
 
 /**
- * Created by dolphineor on 2015-1-18.
+ * this interface is used for data persistence.
+ *
+ * @author dolphineor
  */
 @FunctionalInterface
-public interface Handler {
+public interface Handler<R> {
 
-    void handle(Result result);
+    void handle(R r);
 
 }

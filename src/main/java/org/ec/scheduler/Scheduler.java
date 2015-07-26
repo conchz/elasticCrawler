@@ -3,7 +3,8 @@ package org.ec.scheduler;
 import java.util.List;
 
 /**
- * Created by dolphineor on 2015-1-18.
+ *
+ * @author dolphineor
  */
 @FunctionalInterface
 public interface Scheduler {

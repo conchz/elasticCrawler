@@ -3,9 +3,16 @@ package org.ec.util;
 import java.util.*;
 
 /**
- * Created by dolphineor on 2015-7-25.
+ *  Miscellaneous {@link String} utility methods.
+ *
+ * <p>This class delivers some simple functionality that should really
+ * be provided by the core Java {@code String} and {@link StringBuilder}
+ * classes, such as the ability to {@link #replace} all occurrences of a given
+ * substring in a target string. It also provides easy-to-use methods to convert
+ * between delimited strings, such as CSV strings, and collections and arrays.
+ *
  */
-public final class StringUtils {
+public class StringUtils {
 
     private static final String FOLDER_SEPARATOR = "/";
 

@@ -1,6 +1,6 @@
 package org.ec.scheduler;
 
-import org.ec.core.Worker;
+import org.ec.core.ScrapeWorker;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -9,17 +9,17 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.StampedLock;
 
 /**
- * Created by dolphineor on 2015-1-17.
+ *
+ * @author dolphineor
  */
 public class TaskMaster implements Scheduler {
 
     private final StampedLock lock = new StampedLock();
 
-    private final TaskQueue taskQueue = new TaskQueue();
+    private final TaskQueue taskQueue = new MemoryTaskQueue();
 
-//    private WorkerQueue workerQueue = new WorkerQueue();
 
-    private int workerThreadNum = 1;
+    private int workerThreadNum = 2;
 
     private ExecutorService workerExecutor;
 
@@ -64,7 +64,7 @@ public class TaskMaster implements Scheduler {
         init();
 
         for (int i = 0; i < workerThreadNum; i++) {
-            workerExecutor.execute(new Worker(taskQueue));
+            workerExecutor.execute(new ScrapeWorker(taskQueue));
         }
 
     }

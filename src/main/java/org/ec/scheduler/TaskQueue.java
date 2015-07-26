@@ -1,35 +1,26 @@
 package org.ec.scheduler;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.locks.StampedLock;
-
 /**
- * Created by dolphineor on 2015-1-17.
- * <p>
- * 任务队列
+ * <p>this interface is used for saving task, {@link MemoryTaskQueue} is used by default.
+ * Also, you can implement it by yourself if you need to use distributed task queue.
+ * e.g. Redis
+ *
+ * @author dolphineor
  */
-public class TaskQueue {
+public interface TaskQueue {
 
-    private final BlockingQueue<Task> queue = new LinkedBlockingQueue<>();
+    /**
+     * take a task from task queue.
+     *
+     * @return task
+     */
+    Task take();
 
-    private final StampedLock lock = new StampedLock();
-
-
-    public Task take() {
-        return queue.poll();
-    }
-
-    public void offer(Task task) {
-        long stamp = lock.writeLock();
-        try {
-            boolean isContain = queue.parallelStream().anyMatch(t -> t.getUrl().equals(task.getUrl()) && t.getCharset().equals(task.getCharset()));
-            if (!isContain) {
-                queue.offer(task);
-            }
-        } finally {
-            lock.unlockWrite(stamp);
-        }
-    }
+    /**
+     * put a new task in task queue.
+     *
+     * @param task a new task
+     */
+    void offer(Task task);
 
 }
