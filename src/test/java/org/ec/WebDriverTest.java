@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class WebDriverTest {
 
     public static void main(String[] args) {
+//        System.setProperty("webdriver.chrome.driver", "/path/to/chromedriver");
         Map<String, Object> contentSettings = new HashMap<>();
         contentSettings.put("images", 2);
 
