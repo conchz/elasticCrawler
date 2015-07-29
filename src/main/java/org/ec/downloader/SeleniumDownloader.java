@@ -5,7 +5,7 @@ import org.ec.scheduler.Task;
 import java.io.IOException;
 
 /**
- * {@code SeleniumDownloader} is used for download the pages via AJAX rendering.
+ * {@code SeleniumDownloader} is used for downloading the pages via AJAX rendering.
  *
  * @author dolphineor
  */
