@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * {@code SeleniumDownloader} is used for download the pages via AJAX rendering.
+ * {@code SeleniumDownloader} is used for downloading the pages via AJAX rendering.
  *
  * @author dolphineor
  */
