@@ -39,6 +39,7 @@ public class StringUtils {
      * Objects since attributes may e.g. be primitive value objects as well.
      *
      * @param str the candidate String
+     * @return result
      */
     public static boolean isEmpty(Object str) {
         return (str == null || "".equals(str));
@@ -47,7 +48,7 @@ public class StringUtils {
     /**
      * Check that the given CharSequence is neither {@code null} nor of length 0.
      * Note: Will return {@code true} for a CharSequence that purely consists of whitespace.
-     * <p><pre class="code">
+     * <pre class="code">
      * StringUtils.hasLength(null) = false
      * StringUtils.hasLength("") = false
      * StringUtils.hasLength(" ") = true
@@ -78,7 +79,7 @@ public class StringUtils {
      * Check whether the given CharSequence has actual text.
      * More specifically, returns {@code true} if the string not {@code null},
      * its length is greater than 0, and it contains at least one non-whitespace character.
-     * <p><pre class="code">
+     * <pre class="code">
      * StringUtils.hasText(null) = false
      * StringUtils.hasText("") = false
      * StringUtils.hasText(" ") = false
@@ -276,6 +277,7 @@ public class StringUtils {
      * @param str    the String to check
      * @param prefix the prefix to look for
      * @see java.lang.String#startsWith
+     * @return result
      */
     public static boolean startsWithIgnoreCase(String str, String prefix) {
         if (str == null || prefix == null) {
@@ -299,6 +301,7 @@ public class StringUtils {
      * @param str    the String to check
      * @param suffix the suffix to look for
      * @see java.lang.String#endsWith
+     * @return result
      */
     public static boolean endsWithIgnoreCase(String str, String suffix) {
         if (str == null || suffix == null) {
@@ -323,6 +326,7 @@ public class StringUtils {
      * @param str       the original string (or StringBuilder)
      * @param index     the index in the original string to start matching against
      * @param substring the substring to match at the given index
+     * @return result
      */
     public static boolean substringMatch(CharSequence str, int index, CharSequence substring) {
         for (int j = 0; j < substring.length(); j++) {
@@ -339,6 +343,7 @@ public class StringUtils {
      *
      * @param str string to search in. Return 0 if this is null.
      * @param sub string to search for. Return 0 if this is null.
+     * @return occurrences
      */
     public static int countOccurrencesOf(String str, String sub) {
         if (str == null || sub == null || str.length() == 0 || sub.length() == 0) {
@@ -449,6 +454,7 @@ public class StringUtils {
      * "this.name.is.qualified", returns "qualified".
      *
      * @param qualifiedName the qualified name
+     * @return result
      */
     public static String unqualify(String qualifiedName) {
         return unqualify(qualifiedName, '.');
@@ -460,6 +466,7 @@ public class StringUtils {
      *
      * @param qualifiedName the qualified name
      * @param separator     the separator
+     * @return result
      */
     public static String unqualify(String qualifiedName, char separator) {
         return qualifiedName.substring(qualifiedName.lastIndexOf(separator) + 1);
@@ -504,8 +511,7 @@ public class StringUtils {
     }
 
     /**
-     * Extract the filename from the given path,
-     * e.g. "mypath/myfile.txt" -> "myfile.txt".
+     * Extract the filename from the given path.
      *
      * @param path the file path (may be {@code null})
      * @return the extracted filename, or {@code null} if none
@@ -519,8 +525,7 @@ public class StringUtils {
     }
 
     /**
-     * Extract the filename extension from the given path,
-     * e.g. "mypath/myfile.txt" -> "txt".
+     * Extract the filename extension from the given path.
      *
      * @param path the file path (may be {@code null})
      * @return the extracted filename extension, or {@code null} if none
@@ -541,8 +546,7 @@ public class StringUtils {
     }
 
     /**
-     * Strip the filename extension from the given path,
-     * e.g. "mypath/myfile.txt" -> "mypath/myfile".
+     * Strip the filename extension from the given path.
      *
      * @param path the file path (may be {@code null})
      * @return the path with stripped filename extension,
