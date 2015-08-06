@@ -1,7 +1,7 @@
-package org.ec.core;
+package com.github.dolphineor.core;
 
-import org.ec.scheduler.Task;
-import org.ec.scheduler.TaskQueue;
+import com.github.dolphineor.scheduler.Task;
+import com.github.dolphineor.scheduler.TaskQueue;
 
 import java.io.IOException;
 

@@ -1,11 +1,11 @@
-package org.ec.core;
+package com.github.dolphineor.core;
 
+import com.github.dolphineor.downloader.HttpClientDownloader;
+import com.github.dolphineor.extractor.HtmlExtractor;
+import com.github.dolphineor.scheduler.Task;
+import com.github.dolphineor.scheduler.TaskMaster;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import org.ec.downloader.HttpClientDownloader;
-import org.ec.extractor.HtmlExtractor;
-import org.ec.scheduler.Task;
-import org.ec.scheduler.TaskMaster;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;

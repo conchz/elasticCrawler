@@ -1,4 +1,4 @@
-package org.ec.downloader.conn;
+package com.github.dolphineor.downloader.conn;
 
 import org.apache.http.HttpRequest;
 import org.apache.http.config.Registry;
@@ -14,7 +14,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HttpContext;
 
-import static org.ec.core.ElasticCrawler.CONFIG;
+import static com.github.dolphineor.core.ElasticCrawler.CONFIG;
 
 /**
  * {@code HttpClientConnectionFactory} maintains a pool of

@@ -1,5 +1,7 @@
-package org.ec.downloader;
+package com.github.dolphineor.downloader;
 
+import com.github.dolphineor.downloader.conn.HttpClientConnectionFactory;
+import com.github.dolphineor.scheduler.Task;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -9,8 +11,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
-import org.ec.downloader.conn.HttpClientConnectionFactory;
-import org.ec.scheduler.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

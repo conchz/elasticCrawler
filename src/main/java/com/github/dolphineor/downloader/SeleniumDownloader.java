@@ -1,6 +1,6 @@
-package org.ec.downloader;
+package com.github.dolphineor.downloader;
 
-import org.ec.scheduler.Task;
+import com.github.dolphineor.scheduler.Task;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

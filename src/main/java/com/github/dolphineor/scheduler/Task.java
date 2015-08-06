@@ -1,8 +1,8 @@
-package org.ec.scheduler;
+package com.github.dolphineor.scheduler;
 
-import org.ec.downloader.Downloader;
-import org.ec.extractor.Extractor;
-import org.ec.handler.Handler;
+import com.github.dolphineor.downloader.Downloader;
+import com.github.dolphineor.extractor.Extractor;
+import com.github.dolphineor.handler.Handler;
 
 /**
  * the detailed task object.

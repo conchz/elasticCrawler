@@ -1,10 +1,9 @@
-package org.ec.extractor;
+package com.github.dolphineor.extractor;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 /**
- *
  * @author dolphineor
  */
 public class HtmlExtractor implements Extractor {

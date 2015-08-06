@@ -1,7 +1,7 @@
 package org.ec;
 
-import org.ec.core.ScrapeWorker;
-import org.ec.scheduler.Task;
+import com.github.dolphineor.core.ScrapeWorker;
+import com.github.dolphineor.scheduler.Task;
 
 /**
  * Created by dolphineor on 2015-1-17.

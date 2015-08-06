@@ -1,6 +1,6 @@
-package org.ec.scheduler;
+package com.github.dolphineor.scheduler;
 
-import org.ec.core.ScrapeWorker;
+import com.github.dolphineor.core.ScrapeWorker;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

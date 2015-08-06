@@ -1,6 +1,6 @@
-package org.ec.downloader;
+package com.github.dolphineor.downloader;
 
-import org.ec.scheduler.Task;
+import com.github.dolphineor.scheduler.Task;
 
 import java.io.IOException;
 

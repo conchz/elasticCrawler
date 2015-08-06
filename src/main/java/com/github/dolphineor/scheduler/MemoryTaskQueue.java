@@ -1,4 +1,4 @@
-package org.ec.scheduler;
+package com.github.dolphineor.scheduler;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

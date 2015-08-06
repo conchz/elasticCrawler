@@ -1,4 +1,4 @@
-package org.ec.extractor;
+package com.github.dolphineor.extractor;
 
 /**
  * the extractor for html.
