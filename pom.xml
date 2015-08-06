@@ -9,6 +9,10 @@
     <version>0.2.0-SNAPSHOT</version>
 
 
+    <description>
+        An elastic crawler framework based on java.
+    </description>
+
     <url>https://github.com/dolphineor/elasticCrawler</url>
 
     <developers>
@@ -213,6 +217,7 @@
                             <serverId>sonatype-nexus-elasticCrawler</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <skipStagingRepositoryClose>true</skipStagingRepositoryClose>
                         </configuration>
                     </plugin>
                 </plugins>
