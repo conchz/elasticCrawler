@@ -2,6 +2,7 @@ package com.github.dolphineor.downloader;
 
 import com.github.dolphineor.downloader.conn.HttpClientConnectionFactory;
 import com.github.dolphineor.scheduler.Task;
+import com.github.dolphineor.util.Logs;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -11,8 +12,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -22,9 +21,7 @@ import java.nio.charset.Charset;
  *
  * @author dolphineor
  */
-public class HttpClientDownloader implements Downloader {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientDownloader.class);
+public class HttpClientDownloader extends Logs implements Downloader {
 
     private static HttpClientConnectionFactory httpClientPool = HttpClientConnectionFactory.createPool();
 
@@ -41,7 +38,7 @@ public class HttpClientDownloader implements Downloader {
         CookieStore cookieStore = new BasicCookieStore();
         HttpContext localContext = new BasicHttpContext();
         localContext.setAttribute(HttpClientContext.COOKIE_STORE, cookieStore);
-        LOGGER.info("Downloading url: " + task.getUrl());
+        logger.debug("Downloading url: " + task.getUrl());
         try (CloseableHttpResponse response = httpClient.execute(new HttpGet(task.getUrl()), localContext)) {
             return EntityUtils.toString(response.getEntity(), Charset.forName(task.getCharset()));
         }

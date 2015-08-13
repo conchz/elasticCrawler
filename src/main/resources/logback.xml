@@ -16,8 +16,8 @@
     <!--<logger name="org.ec.className" level="info"/>-->
     <!-- 日志级别 -->
     <root>
-        <!-- 定义INFO级别的日志, 分别在FILE文件和控制台输出 -->
-        <level value="info"/>
+        <!-- 定义DEBUG级别的日志, 分别在FILE文件和控制台输出 -->
+        <level value="debug"/>
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </root>
