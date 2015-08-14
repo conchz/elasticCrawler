@@ -1,4 +1,4 @@
-package org.ec;
+package com.github.dolphineor;
 
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;

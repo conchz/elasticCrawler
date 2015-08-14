@@ -1,4 +1,4 @@
-package org.ec;
+package com.github.dolphineor;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;

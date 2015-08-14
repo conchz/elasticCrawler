@@ -2,7 +2,6 @@ package com.github.dolphineor.scheduler;
 
 import com.github.dolphineor.downloader.Downloader;
 import com.github.dolphineor.extractor.Extractor;
-import com.github.dolphineor.handler.Handler;
 
 /**
  * the detailed task object.
@@ -18,8 +17,6 @@ public class Task {
     private Downloader downloader;
 
     private Extractor extractor;
-
-    private Handler handler;
 
 
     public String getUrl() {
@@ -56,11 +53,4 @@ public class Task {
         this.extractor = extractor;
     }
 
-    public Handler getHandler() {
-        return handler;
-    }
-
-    public void setHandler(Handler handler) {
-        this.handler = handler;
-    }
 }

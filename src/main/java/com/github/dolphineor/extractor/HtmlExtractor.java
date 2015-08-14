@@ -14,7 +14,7 @@ public class HtmlExtractor implements Extractor {
     @Override
     public void extract(String html) {
         Document doc = Jsoup.parse(html);
-        System.out.println(html);
+//        System.out.println(html);
     }
 
     public static Extractor create() {

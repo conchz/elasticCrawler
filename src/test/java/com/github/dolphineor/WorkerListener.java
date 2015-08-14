@@ -1,4 +1,4 @@
-package org.ec;
+package com.github.dolphineor;
 
 import com.github.dolphineor.core.ScrapeWorker;
 import com.github.dolphineor.scheduler.Task;

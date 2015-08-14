@@ -1,4 +1,4 @@
-package org.ec;
+package com.github.dolphineor;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
