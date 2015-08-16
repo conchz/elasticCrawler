@@ -1,42 +1,27 @@
 package com.github.dolphineor.core;
 
 import com.github.dolphineor.scheduler.Task;
-import com.github.dolphineor.scheduler.TaskQueue;
+import com.github.dolphineor.util.Logs;
+import rx.functions.Action1;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * <p>ScrapeWorker
  *
  * @author dolphineor
  */
-public class ScrapeWorker implements Runnable {
+public class ScrapeWorker extends Logs implements Action1<Task> {
 
-    private final TaskQueue taskQueue;
-
-
-    public ScrapeWorker(TaskQueue taskQueue) {
-        this.taskQueue = taskQueue;
-    }
-
+    private final AtomicInteger atomicInteger = new AtomicInteger(0);
 
     @Override
-    public void run() {
-        for (; ; ) {
-            Task task = taskQueue.take();
-            if (task == null) {
-                break;
-            }
-            execute(task);
-        }
-    }
-
-    protected void execute(Task task) {
+    public void call(Task task) {
         try {
+            logger.info(atomicInteger.incrementAndGet() + "");
             task.getExtractor().extract(task.getDownloader().download(task));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }

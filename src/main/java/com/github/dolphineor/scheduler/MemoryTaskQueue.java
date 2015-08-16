@@ -20,6 +20,7 @@ public class MemoryTaskQueue implements TaskQueue {
         return queue.poll();
     }
 
+    // TODO need to remove duplicated task
     public void offer(Task task) {
         long stamp = lock.writeLock();
         try {
@@ -27,6 +28,8 @@ public class MemoryTaskQueue implements TaskQueue {
             if (!isContain) {
                 queue.offer(task);
             }
+        } catch (final Exception ignored) {
+
         } finally {
             lock.unlockWrite(stamp);
         }
