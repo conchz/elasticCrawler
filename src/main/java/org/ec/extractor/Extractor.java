@@ -8,6 +8,6 @@ package org.ec.extractor;
 @FunctionalInterface
 public interface Extractor {
 
-    void extract(String html);
+    void extract(String content);
 
 }
