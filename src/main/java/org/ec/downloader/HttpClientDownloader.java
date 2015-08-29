@@ -1,8 +1,8 @@
-package com.github.dolphineor.downloader;
+package org.ec.downloader;
 
-import com.github.dolphineor.downloader.conn.HttpClientConnectionFactory;
-import com.github.dolphineor.scheduler.Task;
-import com.github.dolphineor.util.Logs;
+import org.ec.downloader.conn.HttpClientConnectionFactory;
+import org.ec.scheduler.Task;
+import org.ec.util.Logs;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;

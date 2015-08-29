@@ -1,4 +1,4 @@
-package com.github.dolphineor.scheduler;
+package org.ec.scheduler;
 
 import java.util.List;
 

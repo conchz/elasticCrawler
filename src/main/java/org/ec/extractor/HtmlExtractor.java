@@ -1,4 +1,4 @@
-package com.github.dolphineor.extractor;
+package org.ec.extractor;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

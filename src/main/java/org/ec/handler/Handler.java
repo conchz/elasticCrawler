@@ -1,4 +1,4 @@
-package com.github.dolphineor.handler;
+package org.ec.handler;
 
 /**
  * this interface is used for data persistence.

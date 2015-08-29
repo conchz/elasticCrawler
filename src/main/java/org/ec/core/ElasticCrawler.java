@@ -1,10 +1,10 @@
-package com.github.dolphineor.core;
+package org.ec.core;
 
-import com.github.dolphineor.downloader.HttpClientDownloader;
-import com.github.dolphineor.extractor.HtmlExtractor;
-import com.github.dolphineor.scheduler.MemoryTaskQueue;
-import com.github.dolphineor.scheduler.Task;
-import com.github.dolphineor.scheduler.TaskQueue;
+import org.ec.downloader.HttpClientDownloader;
+import org.ec.extractor.HtmlExtractor;
+import org.ec.scheduler.MemoryTaskQueue;
+import org.ec.scheduler.Task;
+import org.ec.scheduler.TaskQueue;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import rx.Observable;

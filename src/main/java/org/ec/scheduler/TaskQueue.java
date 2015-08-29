@@ -1,4 +1,4 @@
-package com.github.dolphineor.scheduler;
+package org.ec.scheduler;
 
 /**
  * <p>this interface is used for saving task, {@link MemoryTaskQueue} is used by default.

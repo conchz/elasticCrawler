@@ -1,4 +1,4 @@
-package com.github.dolphineor.util;
+package org.ec.util;
 
 import java.util.*;
 

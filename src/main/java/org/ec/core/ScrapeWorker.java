@@ -1,7 +1,7 @@
-package com.github.dolphineor.core;
+package org.ec.core;
 
-import com.github.dolphineor.scheduler.Task;
-import com.github.dolphineor.util.Logs;
+import org.ec.scheduler.Task;
+import org.ec.util.Logs;
 import rx.functions.Action1;
 
 import java.io.IOException;

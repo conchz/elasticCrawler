@@ -1,4 +1,4 @@
-package com.github.dolphineor.util;
+package org.ec.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
