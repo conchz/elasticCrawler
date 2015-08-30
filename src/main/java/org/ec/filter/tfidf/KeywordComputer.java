@@ -16,18 +16,18 @@ public class KeywordComputer {
 
     private int nKeyword = 10;
 
-    //default constructor keyword number=10
+    // Default constructor keyword number=10
     public KeywordComputer() {
         nKeyword = 10;
     }
 
-    // constructor set keyword number
+    // Constructor set keyword number
     public KeywordComputer(int nKeyword) {
         this.nKeyword = nKeyword;
 
     }
 
-    //get keywords object list
+    // Get keywords object list
     private List<Keyword> computeArticleTfidf(String content, int titleLength) {
         Map<String, Keyword> tm = new HashMap<>();
         LearnTool learn = new LearnTool();
@@ -54,17 +54,17 @@ public class KeywordComputer {
         }
     }
 
-    //get keywords,need title and content
+    // Get keywords, need title and content
     public Collection<Keyword> computeArticleTfidf(String title, String content) {
         return computeArticleTfidf(title + "\t" + content, title.length());
     }
 
-    //get keywords, just need content
+    // Get keywords, just need content
     public Collection<Keyword> computeArticleTfidf(String content) {
         return computeArticleTfidf(content, 0);
     }
 
-    //get keywords weight
+    // Get keywords weight
     private int getWeight(Term term, int length, int titleLength) {
         if (term.getName().matches("(?s)\\d.*")) {
             return 0;
@@ -72,7 +72,7 @@ public class KeywordComputer {
         if (term.getName().trim().length() < 2) {
             return 0;
         }
-        //String pos = term.getNatrue().natureStr;
+//        String pos = term.getNatrue().natureStr;
         String pos = term.getNatureStr();
         if (!pos.startsWith("n") || "num".equals(pos)) {
             return 0;

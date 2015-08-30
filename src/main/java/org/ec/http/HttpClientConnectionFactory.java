@@ -1,4 +1,4 @@
-package org.ec.downloader.conn;
+package org.ec.http;
 
 import org.apache.http.HttpRequest;
 import org.apache.http.config.Registry;
@@ -14,7 +14,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.protocol.HttpContext;
 
-import static org.ec.core.ElasticCrawler.CONFIG;
+import static org.ec.core.ElasticCrawler.config;
 
 /**
  * {@code HttpClientConnectionFactory} maintains a pool of
@@ -37,8 +37,8 @@ public class HttpClientConnectionFactory {
                 .register("https", SSLConnectionSocketFactory.getSocketFactory())
                 .build();
         connectionManager = new PoolingHttpClientConnectionManager(registry);
-        connectionManager.setMaxTotal(CONFIG.getInt("elasticCrawler.http.poolSize"));
-        connectionManager.setDefaultMaxPerRoute(CONFIG.getInt("elasticCrawler.http.maxPerRoute"));
+        connectionManager.setMaxTotal(config.getInt("elasticCrawler.http.poolSize"));
+        connectionManager.setDefaultMaxPerRoute(config.getInt("elasticCrawler.http.maxPerRoute"));
     }
 
     public static HttpClientConnectionFactory createPool() {
@@ -47,13 +47,13 @@ public class HttpClientConnectionFactory {
 
     public CloseableHttpClient createHttpClient() {
         HttpClientBuilder httpClientBuilder = HttpClients.custom().setConnectionManager(connectionManager);
-        if (CONFIG.getIsNull("elasticCrawler.http.userAgent")) {
+        if (config.getIsNull("elasticCrawler.http.userAgent")) {
             httpClientBuilder.setUserAgent("");
         } else {
-            httpClientBuilder.setUserAgent(CONFIG.getString("elasticCrawler.http.userAgent"));
+            httpClientBuilder.setUserAgent(config.getString("elasticCrawler.http.userAgent"));
         }
 
-        if (CONFIG.getBoolean("elasticCrawler.http.gzip")) {
+        if (config.getBoolean("elasticCrawler.http.gzip")) {
             httpClientBuilder.addInterceptorFirst((HttpRequest request, HttpContext context) -> {
                 if (!request.containsHeader("Accept-Encoding")) {
                     request.addHeader("Accept-Encoding", "gzip");
@@ -63,10 +63,10 @@ public class HttpClientConnectionFactory {
         }
 
         SocketConfig socketConfig = SocketConfig.custom()
-                .setSoKeepAlive(CONFIG.getBoolean("elasticCrawler.http.socketKeepAlive"))
-                .setTcpNoDelay(CONFIG.getBoolean("elasticCrawler.http.tcpNoDelay")).build();
+                .setSoKeepAlive(config.getBoolean("elasticCrawler.http.socketKeepAlive"))
+                .setTcpNoDelay(config.getBoolean("elasticCrawler.http.tcpNoDelay")).build();
         httpClientBuilder.setDefaultSocketConfig(socketConfig)
-                .setRetryHandler(new DefaultHttpRequestRetryHandler(CONFIG.getInt("elasticCrawler.http.retryTimes"), true));
+                .setRetryHandler(new DefaultHttpRequestRetryHandler(config.getInt("elasticCrawler.http.retryTimes"), true));
         return httpClientBuilder.build();
     }
 

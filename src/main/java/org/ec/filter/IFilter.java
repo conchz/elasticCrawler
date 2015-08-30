@@ -6,7 +6,6 @@ import org.ec.extractor.Page;
  * Created on 2015-08-29.
  *
  * @author dolphineor
- * @since JDK 1.8
  */
 @FunctionalInterface
 public interface IFilter {

@@ -14,6 +14,12 @@ public class Page {
     private String charset;
 
 
+    public Page(String url, String content, String charset) {
+        this.url = url;
+        this.content = content;
+        this.charset = charset;
+    }
+
     public String getUrl() {
         return url;
     }

@@ -1,12 +1,12 @@
 package org.ec.core;
 
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 import org.ec.downloader.HttpClientDownloader;
 import org.ec.extractor.HtmlExtractor;
 import org.ec.scheduler.MemoryTaskQueue;
 import org.ec.scheduler.Task;
 import org.ec.scheduler.TaskQueue;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 import rx.Observable;
 
 import java.io.UnsupportedEncodingException;
@@ -17,13 +17,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
+ * Created on 2015-01-18.
  *
  * @author dolphineor
  */
 public class ElasticCrawler {
 
-    public static final Config CONFIG = ConfigFactory.defaultApplication();
     public static final String SCRAPE_URL = "http://search.jd.com/Search?keyword=%s&enc=utf-8";
+
+    public static Config config = ConfigFactory.defaultApplication();
 
     public static void main(String[] args) throws UnsupportedEncodingException {
         String[] arr = {"冬装", "毛衣", "羽绒服", "书包", "手套", "夹克", "卫衣", "暖宝宝", "围巾"};
@@ -51,7 +53,7 @@ public class ElasticCrawler {
 
     }
 
-    private final int scrapeThreadNum = CONFIG.getInt("elasticCrawler.thread.tNum");
+    private final int scrapeThreadNum = config.getInt("elasticCrawler.thread.tNum");
 
     private final ExecutorService executor = Executors.newFixedThreadPool(scrapeThreadNum);
 
@@ -100,6 +102,16 @@ public class ElasticCrawler {
     }
 
     public static ElasticCrawler create(TaskQueue taskQueue) {
+        return new ElasticCrawler(taskQueue);
+    }
+
+    public static ElasticCrawler create(Config config) {
+        ElasticCrawler.config = config;
+        return new ElasticCrawler(new MemoryTaskQueue());
+    }
+
+    public static ElasticCrawler create(Config config, TaskQueue taskQueue) {
+        ElasticCrawler.config = config;
         return new ElasticCrawler(taskQueue);
     }
 }

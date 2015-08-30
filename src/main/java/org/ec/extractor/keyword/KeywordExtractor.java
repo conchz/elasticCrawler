@@ -1,4 +1,4 @@
-package org.ec.extractor;
+package org.ec.extractor.keyword;
 
 import java.util.List;
 
@@ -18,5 +18,5 @@ public interface KeywordExtractor {
      * @param extractNum    关键字数量
      * @return 排序好的关键字列表
      */
-    List<String> extractContent(String content, String algorithmType, String extractNum);
+    List<String> extractContent(String content, String algorithmType, int extractNum);
 }

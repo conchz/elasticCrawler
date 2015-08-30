@@ -12,8 +12,8 @@ public class HtmlExtractor implements Extractor {
 
 
     @Override
-    public void extract(String content) {
-        Document doc = Jsoup.parse(content);
+    public void extract(Page page) {
+        Document doc = Jsoup.parse(page.getContent());
     }
 
     public static Extractor create() {

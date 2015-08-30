@@ -13,7 +13,7 @@
         </encoder>
     </appender>
 
-    <!--<logger name="org.ec.className" level="info"/>-->
+    <!--<logger name="className" level="info"/>-->
     <!-- 日志级别 -->
     <root>
         <!-- 定义DEBUG级别的日志, 分别在FILE文件和控制台输出 -->

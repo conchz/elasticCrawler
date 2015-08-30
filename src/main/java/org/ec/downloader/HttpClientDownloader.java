@@ -1,6 +1,6 @@
 package org.ec.downloader;
 
-import org.ec.downloader.conn.HttpClientConnectionFactory;
+import org.ec.http.HttpClientConnectionFactory;
 import org.ec.scheduler.Task;
 import org.ec.util.Logs;
 import org.apache.http.client.CookieStore;

@@ -1,4 +1,4 @@
-package org.ec.util;
+package org.ec;
 
 import java.util.*;
 

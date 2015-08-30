@@ -1,7 +1,7 @@
 package org.ec.handler;
 
 /**
- * this interface is used for data persistence.
+ * <p>this interface is used for data persistence.
  *
  * @author dolphineor
  */
