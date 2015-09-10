@@ -31,8 +31,6 @@ public class HanLPKeywordExtractor extends Logs implements KeywordExtractor {
      * @param content    文本内容
      * @param extractNum 关键字提取数量
      * @return 提取好的JSON格式关键字
-     * @throws NumberFormatException
-     * @throws IOException
      */
     public String getJSONKeyWordInfo(String content, int extractNum) throws NumberFormatException, IOException {
 

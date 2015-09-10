@@ -28,25 +28,25 @@ import java.nio.IntBuffer;
  * and then reducing them modulo some irreducible polynomial of degree 32. The result is a hash function
  * with very satisfactory properties. In addition the polynomial operations are fast in hardware;
  * even in this Java implementation the speed is reasonable.</p>
- * <p/>
+ *
  * <p>Methods in this class can compute a hash value for an array of bytes, chars or ints, as well as
  * any {@link java.io.Serializable} object, String, file, or resource denoted by URL.</p>
- * <p/>
+ *
  * <p>Methods of this class are all thread-safe, and hash function objects are immutable.</p>
- * <p/>
+ *
  * <p>Polynomials of degree 32 are used frequently in this code, and are represented efficiently as
  * <code>int</code>s. An <code>int</code> has 32 bits, whereas a polynomial of degree 32 has 33 coefficients.
  * Therefore, the high-order bit of the <code>int</code> is the degree 31 term's
  * coefficient, and the low-order bit is the constant coefficient.</p>
- * <p/>
+ *
  * <p>For example the integer 0x00000803, in binary, is:</p>
- * <p/>
+ *
  * <p><code>00000000 00000000 00001000 00000011</code></p>
- * <p/>
+ *
  * <p>Therefore it correponds to the polynomial:</p>
- * <p/>
+ *
  * <p><code>x<sup>32</sup> + x<sup>11</sup> + x + 1</code></p>
- * <p/>
+ *
  * <p>The implementation is derived from the paper "Some applications of Rabin's fingerprinting method"
  * by Andrei Broder. See <a href="http://server3.pa-x.dec.com/SRC/publications/src-papers.html">
  * http://server3.pa-x.dec.com/SRC/publications/src-papers.html</a> for a full citation and the paper
@@ -79,7 +79,7 @@ public final class RabinHashFunction32 implements Serializable, Cloneable {
 
     /**
      * <p>Creates a RabinHashFunction32 based on the specified polynomial.</p>
-     * <p/>
+     *
      * <p>This class does not test the polynomial for irreducibility; therefore this constructor should
      * only be used with polynomials that are already known to be irreducible, or else the hash function
      * will not perform optimally.</p>

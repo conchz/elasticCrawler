@@ -13,8 +13,8 @@ public interface IFilter {
     /**
      * <p>判断内容的相似性, 为1表示已经存在, 为0表示不存在, 为浮点数则判断相似度的值.
      *
-     * @param page
-     * @return
+     * @param page {@link Page}
+     * @return similarity
      */
     float similar(Page page);
 }

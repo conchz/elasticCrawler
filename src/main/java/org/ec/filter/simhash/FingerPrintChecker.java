@@ -35,8 +35,8 @@ public class FingerPrintChecker {
     /**
      * <p>检查指纹信息是否存在.
      *
-     * @param fingerPrint
-     * @return
+     * @param fingerPrint the finger message
+     * @return isExists
      */
     public boolean checkExist(String fingerPrint) {
         boolean resultFlag = false;

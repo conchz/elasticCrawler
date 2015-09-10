@@ -10,6 +10,7 @@ public interface KeyValueDataStore<K, V> {
     /**
      * 将数据放入到数据库中
      *
+     * @param name  数据库名称
      * @param key   主键
      * @param value 值
      */
@@ -18,14 +19,16 @@ public interface KeyValueDataStore<K, V> {
     /**
      * 从存储中获取指定键对应的值
      *
-     * @param key 主键
+     * @param name 数据库名称
+     * @param key  主键
      */
     V getFromStore(String name, K key);
 
     /**
      * 从数据存储中删除指定的记录
      *
-     * @param key 主键
+     * @param name 数据库名称
+     * @param key  主键
      */
     void deleteFromStore(String name, K key);
 }

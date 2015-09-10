@@ -40,7 +40,7 @@ public class RegexLanguageUtils {
      * <p>判断是否只包含英文相关字符.
      *
      * @param text 文本信息
-     * @return
+     * @return isEnglish
      */
     public boolean isEnglish(String text) {
         boolean result = false;
@@ -54,7 +54,7 @@ public class RegexLanguageUtils {
      * <p>判断字符串中是否包含英文字符.
      *
      * @param text 文本信息
-     * @return
+     * @return isChinese
      */
     public boolean isChinese(String text) {
         boolean result = false;
@@ -72,7 +72,7 @@ public class RegexLanguageUtils {
      * <p>判断是否为日语.
      *
      * @param text 文本信息
-     * @return
+     * @return isJapanese
      */
     public boolean isJapanese(String text) {
         boolean result = false;
