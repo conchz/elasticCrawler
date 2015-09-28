@@ -45,7 +45,7 @@
 
     <properties>
         <berkeley-version>6.4.9</berkeley-version>
-        <selenium-version>2.47.1</selenium-version>
+        <selenium-version>2.47.2</selenium-version>
     </properties>
 
     <repositories>
@@ -115,7 +115,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.6</version>
+            <version>1.2.7</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>

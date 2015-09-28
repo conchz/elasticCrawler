@@ -1,4 +1,7 @@
-<configuration>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Doc: http://logback.qos.ch/manual/configuration.html -->
+<!-- This config file will be automatically reloaded every minute -->
+<configuration scan="true" scanPeriod="60 seconds">
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>%d [%thread] %-5level %logger{36} - %msg%n%ex{20}</pattern>
@@ -6,7 +9,7 @@
     </appender>
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <encoder>UTF-8</encoder>
-        <file>elasticCrawler.log</file>
+        <file>./log/elasticCrawler.log</file>
         <append>true</append>
         <encoder>
             <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n%ex{20}</pattern>
@@ -16,7 +19,6 @@
     <!--<logger name="className" level="info"/>-->
     <!-- 日志级别 -->
     <root>
-        <!-- 定义DEBUG级别的日志, 分别在FILE文件和控制台输出 -->
         <level value="debug"/>
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>

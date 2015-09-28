@@ -1,5 +1,6 @@
 package org.ec;
 
+import com.google.common.collect.Maps;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -17,7 +18,7 @@ public class WebDriverTest {
 
     public static void main(String[] args) {
 //        System.setProperty("webdriver.chrome.driver", "/path/to/chromedriver");
-        Map<String, Object> contentSettings = new HashMap<>();
+        Map<String, Object> contentSettings = Maps.newHashMap();
         contentSettings.put("images", 2);
 
         Map<String, Object> preferences = new HashMap<>();
