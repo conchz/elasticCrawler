@@ -8,6 +8,7 @@ import org.spider.scheduler.TaskQueue;
 import rx.Observable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,6 +20,9 @@ import java.util.concurrent.Executors;
  */
 public class ElasticCrawler {
 
+    /**
+     * Spider configurations
+     */
     public static Config config = ConfigFactory.defaultApplication();
 
 
@@ -43,16 +47,12 @@ public class ElasticCrawler {
 
     public void runAsync() {
         executor.execute(() -> {
-            ScrapeWorker scrapeWorker = new ScrapeWorker();
+            final ScrapeWorker scrapeWorker = new ScrapeWorker();
             for (int i = 0; i < scrapeThreadNum; i++) {
                 executor.execute(() -> {
-                    while (true) {
-                        Task task = taskQueue.take();
-                        if (task != null) {
-                            Observable<Task> taskObservable = Observable.just(task);
-                            taskObservable.subscribe(scrapeWorker);
-                        }
-                    }
+                    for (; ; )
+                        Optional.ofNullable(taskQueue.take())
+                                .ifPresent(task -> Observable.just(task).subscribe(scrapeWorker));
                 });
 
                 latch.countDown();

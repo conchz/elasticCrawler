@@ -21,7 +21,7 @@ public class ElasticCrawlerTest {
     public static void main(String[] args) throws Exception {
         String scrapeUrl = "http://search.jd.com/Search?keyword=%s&enc=utf-8";
 
-        String[] arr = {"冬装", "毛衣", "羽绒服", "书包", "手套", "夹克", "卫衣", "暖宝宝", "围巾"};
+        String[] arr = {"冬装", "毛衣", "羽绒服", "书包", "手套", "夹克", "卫衣", "暖宝宝", "围巾", "手机"};
         List<Task> tasks = new ArrayList<>();
 
         for (String k : arr) {
