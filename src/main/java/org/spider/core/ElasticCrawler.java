@@ -1,0 +1,86 @@
+package org.spider.core;
+
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import org.spider.scheduler.MemoryTaskQueue;
+import org.spider.scheduler.Task;
+import org.spider.scheduler.TaskQueue;
+import rx.Observable;
+
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+/**
+ * Created on 2015-01-18.
+ *
+ * @author dolphineor
+ */
+public class ElasticCrawler {
+
+    public static Config config = ConfigFactory.defaultApplication();
+
+
+    private final int scrapeThreadNum = config.getInt("spider.thread.tNum");
+
+    private final ExecutorService executor = Executors.newFixedThreadPool(scrapeThreadNum);
+
+    private final CountDownLatch latch = new CountDownLatch(scrapeThreadNum);
+
+    private final TaskQueue taskQueue;
+
+
+    protected ElasticCrawler(TaskQueue taskQueue) {
+        this.taskQueue = taskQueue;
+    }
+
+
+    public ElasticCrawler addTask(List<Task> tasks) {
+        tasks.stream().forEach(taskQueue::offer);
+        return this;
+    }
+
+    public void runAsync() {
+        executor.execute(() -> {
+            ScrapeWorker scrapeWorker = new ScrapeWorker();
+            for (int i = 0; i < scrapeThreadNum; i++) {
+                executor.execute(() -> {
+                    while (true) {
+                        Task task = taskQueue.take();
+                        if (task != null) {
+                            Observable<Task> taskObservable = Observable.just(task);
+                            taskObservable.subscribe(scrapeWorker);
+                        }
+                    }
+                });
+
+                latch.countDown();
+            }
+        });
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ElasticCrawler create() {
+        return new ElasticCrawler(new MemoryTaskQueue());
+    }
+
+    public static ElasticCrawler create(TaskQueue taskQueue) {
+        return new ElasticCrawler(taskQueue);
+    }
+
+    public static ElasticCrawler create(Config config) {
+        ElasticCrawler.config = config;
+        return new ElasticCrawler(new MemoryTaskQueue());
+    }
+
+    public static ElasticCrawler create(Config config, TaskQueue taskQueue) {
+        ElasticCrawler.config = config;
+        return new ElasticCrawler(taskQueue);
+    }
+}
