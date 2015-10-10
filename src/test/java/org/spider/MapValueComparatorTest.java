@@ -8,11 +8,11 @@ import java.util.*;
  *
  * @author dolphineor
  */
-public class MapValueComparator implements Comparator<String> {
+public class MapValueComparatorTest implements Comparator<String> {
 
     private Map<String, Integer> base;
 
-    public MapValueComparator(HashMap<String, Integer> map) {
+    public MapValueComparatorTest(HashMap<String, Integer> map) {
         this.base = map;
     }
 
@@ -29,7 +29,7 @@ public class MapValueComparator implements Comparator<String> {
 //        StringBuffer s = new StringBuffer("中国,华东地区,山东省,烟台市:10;");
         StringBuffer allValueNum = new StringBuffer();
         HashMap<String, Integer> map = new HashMap<String, Integer>();
-        MapValueComparator vc = new MapValueComparator(map);
+        MapValueComparatorTest vc = new MapValueComparatorTest(map);
         TreeMap<String, Integer> sorted_map = new TreeMap<String, Integer>(vc);
 //        20:0;22:0;15:943;13:2845;14:0;
         map.put("20", 0);

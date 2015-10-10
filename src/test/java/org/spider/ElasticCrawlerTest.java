@@ -12,7 +12,7 @@ import static java.net.URLEncoder.encode;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Created by dolphineor on 2015-10-10.
+ * Created on 2015-10-10.
  *
  * @author dolphineor
  */
