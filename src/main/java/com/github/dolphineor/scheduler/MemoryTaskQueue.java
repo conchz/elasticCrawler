@@ -20,12 +20,12 @@ public class MemoryTaskQueue implements TaskQueue {
         return queue.poll();
     }
 
-    // TODO need to remove duplicated task
     public void offer(Task task) {
         long stamp = lock.writeLock();
         try {
-            boolean isContain = queue.parallelStream().anyMatch(t -> t.getUrl().equals(task.getUrl()) && t.getCharset().equals(task.getCharset()));
-            if (!isContain) {
+            boolean isExists = queue.parallelStream()
+                    .anyMatch(t -> t.getUrl().equals(task.getUrl()) && t.getCharset().equals(task.getCharset()));
+            if (!isExists) {
                 queue.offer(task);
             }
         } catch (final Exception ignored) {

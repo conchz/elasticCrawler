@@ -7,7 +7,6 @@ import java.util.List;
  *
  * @author dolphineor
  */
-@FunctionalInterface
 public interface KeywordExtractor {
 
     /**

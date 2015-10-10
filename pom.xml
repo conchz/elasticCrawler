@@ -45,7 +45,7 @@
 
     <properties>
         <berkeley-version>6.4.9</berkeley-version>
-        <selenium-version>2.47.2</selenium-version>
+        <selenium-version>2.48.2</selenium-version>
     </properties>
 
     <repositories>
@@ -85,7 +85,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5</version>
+            <version>4.5.1</version>
         </dependency>
         <dependency>
             <groupId>us.codecraft</groupId>
@@ -213,7 +213,7 @@
         </repository>
     </distributionManagement>
 
-    <!--<profiles>
+    <profiles>
         <profile>
             <id>release-sign-artifacts</id>
             <activation>
@@ -241,7 +241,7 @@
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.5</version>
+                        <version>1.6.6</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>sonatype-nexus-elasticCrawler</serverId>
@@ -253,6 +253,6 @@
                 </plugins>
             </build>
         </profile>
-    </profiles>-->
+    </profiles>
 
 </project>
