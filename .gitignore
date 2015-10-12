@@ -3,6 +3,12 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# Berkeley DB
+*.jdb
+*.csv
+*.0
+*.lck
+
 # Package Files #
 *.jar
 *.war

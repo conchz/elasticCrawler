@@ -3,12 +3,14 @@ package org.spider.scheduler;
 import org.spider.downloader.Downloader;
 import org.spider.extractor.Extractor;
 
+import java.io.Serializable;
+
 /**
  * the detailed task object.
  *
  * @author dolphineor
  */
-public class Task {
+public class Task implements Serializable {
 
     private String url;
 

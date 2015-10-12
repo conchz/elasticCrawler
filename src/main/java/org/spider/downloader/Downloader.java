@@ -3,6 +3,7 @@ package org.spider.downloader;
 import org.spider.scheduler.Task;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * the basic download interface, we implement {@link HttpClientDownloader}
@@ -11,8 +12,7 @@ import java.io.IOException;
  *
  * @author dolphineor
  */
-@FunctionalInterface
-public interface Downloader {
+public interface Downloader extends Serializable {
 
     String download(Task task) throws IOException;
 
