@@ -16,7 +16,7 @@ public class ScrapeWorker extends Logs implements Action1<Task> {
     @Override
     public void call(Task task) {
         try {
-            String content = task.getDownloader().download(task).toString();
+            String content = task.getDownloader().download(task);
             task.getExtractor().extract(content);
         } catch (IOException e) {
             e.printStackTrace();

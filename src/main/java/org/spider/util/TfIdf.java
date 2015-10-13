@@ -1,4 +1,4 @@
-package org.spider.algorithm;
+package org.spider.util;
 
 import org.wltea.analyzer.core.IKSegmenter;
 import org.wltea.analyzer.core.Lexeme;
@@ -69,8 +69,7 @@ public class TfIdf {
                         fileList.add(file.getFileName().toFile().getAbsolutePath());
                         return FileVisitResult.CONTINUE;
                     }
-                })
-                ;
+                });
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -86,15 +85,16 @@ public class TfIdf {
      * @return java.lang.String
      */
     private static String readFile(String filePath) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
 
         try {
-            Files.readAllLines(Paths.get(filePath), StandardCharsets.UTF_8).forEach(line -> sb.append(line).append("\r\n"));
+            Files.readAllLines(Paths.get(filePath), StandardCharsets.UTF_8)
+                    .forEach(line -> stringBuilder.append(line).append("\r\n"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return sb.toString();
+        return stringBuilder.toString();
     }
 
     /**
@@ -121,15 +121,10 @@ public class TfIdf {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return words;
     }
 
-    /**
-     * <p>返回LinkedHashMap的分词.
-     *
-     * @param content 文本内容
-     * @return
-     */
     public static Map<String, Integer> segStr(String content) {
         // 分词
         Reader input = new StringReader(content);
@@ -148,6 +143,7 @@ public class TfIdf {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return words;
     }
 
@@ -170,6 +166,7 @@ public class TfIdf {
                 }
             }
         }
+
         return keywords;
     }
 
@@ -185,12 +182,14 @@ public class TfIdf {
         if (segWordsResult == null || segWordsResult.size() == 0) {
             return tf;
         }
+
         Double size = (double) segWordsResult.size();
         Set<String> keys = segWordsResult.keySet();
         for (String key : keys) {
             Integer value = segWordsResult.get(key);
             tf.put(key, Double.valueOf(value) / size);
         }
+
         return tf;
     }
 
@@ -259,6 +258,7 @@ public class TfIdf {
             }
 
         }
+
         return containWordOfAllDocNumberMap;
     }
 
@@ -280,6 +280,7 @@ public class TfIdf {
             Double number = Double.valueOf(containWordOfAllDocNumberMap.get(word));
             idfMap.put(word, Math.log(wordSize / (number + 1.0d)));
         }
+
         return idfMap;
     }
 

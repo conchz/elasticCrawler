@@ -1,4 +1,4 @@
-package org.spider.filter.tfidf;
+package org.spider.util;
 
 import org.ansj.app.keyword.Keyword;
 import org.ansj.dic.LearnTool;

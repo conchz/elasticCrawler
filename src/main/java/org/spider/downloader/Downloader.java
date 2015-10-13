@@ -6,9 +6,8 @@ import java.io.IOException;
 import java.io.Serializable;
 
 /**
- * the basic download interface, we implement {@link HttpClientDownloader}
- * and {@link SeleniumDownloader}.
- * you can implement it by yourself if you need.
+ * <p>the basic download interface, we implement {@link HttpClientDownloader}
+ * and {@link SeleniumDownloader}. You can implement it by yourself if you need.</p>
  *
  * @author dolphineor
  */

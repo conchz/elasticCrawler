@@ -68,6 +68,7 @@ public class HttpClientConnectionFactory {
                 .build();
         httpClientBuilder.setDefaultSocketConfig(socketConfig)
                 .setRetryHandler(new DefaultHttpRequestRetryHandler(config.getInt("spider.http.retryTimes"), true));
+
         return httpClientBuilder.build();
     }
 

@@ -1,4 +1,4 @@
-package org.spider.filter.simhash;
+package org.spider.bdb;
 
 import org.spider.util.Logs;
 import com.google.common.base.Strings;
@@ -20,14 +20,17 @@ public class BerkeleyDataStore extends Logs implements KeyValueDataStore<String,
      * 数据库实例对象
      */
     private Database myDatabase = null;
+
     /**
      * 数据库的环境信息
      */
     private Environment myDbEnvironment;
 
+
     public BerkeleyDataStore() {
     }
 
+    
     public void init(String dbName) {
         logger.info("打开数据库: " + dbName);
         EnvironmentConfig envConfig = new EnvironmentConfig();

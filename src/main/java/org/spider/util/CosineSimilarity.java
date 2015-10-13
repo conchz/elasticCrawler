@@ -1,4 +1,4 @@
-package org.spider.algorithm;
+package org.spider.util;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * @author dolphineor
  */
-public class CosineSimilarAlgorithm {
+public class CosineSimilarity {
 
     /**
      * <p>获取两个文件相似性.
@@ -24,12 +24,14 @@ public class CosineSimilarAlgorithm {
         try {
             Map<String, Map<String, Integer>> firstTfMap = TfIdf.wordSegCount(firstFile);
             Map<String, Map<String, Integer>> secondTfMap = TfIdf.wordSegCount(secondFile);
+
             if (firstTfMap == null || firstTfMap.size() == 0) {
                 throw new IllegalArgumentException("firstFile not found or firstFile is empty! ");
             }
             if (secondTfMap == null || secondTfMap.size() == 0) {
                 throw new IllegalArgumentException("secondFile not found or secondFile is empty! ");
             }
+
             Map<String, Integer> firstWords = firstTfMap.get(firstFile);
             Map<String, Integer> secondWords = secondTfMap.get(secondFile);
             if (firstWords.size() < secondWords.size()) {
@@ -39,9 +41,10 @@ public class CosineSimilarAlgorithm {
             }
             return calculateCos((LinkedHashMap<String, Integer>) firstWords, (LinkedHashMap<String, Integer>) secondWords);
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
+
         return 0d;
     }
 
@@ -63,9 +66,10 @@ public class CosineSimilarAlgorithm {
             }
             return calculateCos((LinkedHashMap<String, Integer>) firstTfMap, (LinkedHashMap<String, Integer>) secondTfMap);
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
+
         return 0d;
     }
 
@@ -80,7 +84,7 @@ public class CosineSimilarAlgorithm {
 
         List<Map.Entry<String, Integer>> firstList = new ArrayList<>(first.entrySet());
         List<Map.Entry<String, Integer>> secondList = new ArrayList<>(second.entrySet());
-        //计算相似度
+        // 计算相似度
         double vectorFirstModulo = 0.00;    // 向量1的模
         double vectorSecondModulo = 0.00;   // 向量2的模
         double vectorProduct = 0.00;        // 向量积
@@ -92,6 +96,7 @@ public class CosineSimilarAlgorithm {
             }
             vectorFirstModulo += firstList.get(i).getValue().doubleValue() * firstList.get(i).getValue().doubleValue();
         }
+
         return vectorProduct / (Math.sqrt(vectorFirstModulo) * Math.sqrt(vectorSecondModulo));
     }
 

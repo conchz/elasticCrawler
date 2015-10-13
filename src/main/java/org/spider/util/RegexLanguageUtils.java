@@ -28,13 +28,15 @@ public class RegexLanguageUtils {
      */
     private static final String ENGLISH_PATTERN = "[\u0020-\u007F]+";
 
-    private RegexLanguageUtils() {
-    }
-
     /**
      * 单一实例
      */
     public static final RegexLanguageUtils INSTANCE = new RegexLanguageUtils();
+
+
+    private RegexLanguageUtils() {
+    }
+
 
     /**
      * <p>判断是否只包含英文相关字符.
@@ -47,6 +49,7 @@ public class RegexLanguageUtils {
         if (StringUtil.isNotBlank(text)) {
             result = text.matches(ENGLISH_PATTERN);
         }
+
         return result;
     }
 
@@ -65,6 +68,7 @@ public class RegexLanguageUtils {
                 result = true;
             }
         }
+
         return result;
     }
 
@@ -83,6 +87,7 @@ public class RegexLanguageUtils {
                 result = true;
             }
         }
+
         return result;
     }
 }

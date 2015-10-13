@@ -1,4 +1,4 @@
-package org.spider.filter.simhash;
+package org.spider.bdb;
 
 /**
  * Created on 2015-08-29.
@@ -7,6 +7,7 @@ package org.spider.filter.simhash;
  * @author dolphineor
  */
 public interface KeyValueDataStore<K, V> {
+
     /**
      * 将数据放入到数据库中
      *

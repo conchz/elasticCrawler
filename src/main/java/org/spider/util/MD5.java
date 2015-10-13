@@ -12,6 +12,7 @@ public class MD5 {
 
     private String md5;
 
+
     private MD5(String value, String salt) {
         this.md5 = generateMD5(value + "{" + salt + "}");
     }
