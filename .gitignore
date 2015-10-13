@@ -10,7 +10,7 @@
 *.lck
 
 # Package Files #
-# *.jar
+*.jar
 *.war
 *.ear
 
