@@ -3,116 +3,112 @@ package org.spider.algorithm;
 import org.wltea.analyzer.core.IKSegmenter;
 import org.wltea.analyzer.core.Lexeme;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 
 /**
  * Created on 2015-10-13.
- * <p>TF-IDF算法实现.
+ * <p>TF-IDF算法实现.</p>
  * <a href="http://www.cnblogs.com/biyeymyhjob/archive/2012/07/17/2595249.html"></a>
  *
  * @author dolphineor
  */
-public class TfIdfAlgorithm {
+public class TfIdf {
 
     /**
-     * 文件名保存在list
-     */
-    private static List<String> fileList = new ArrayList<>();
-    /**
-     * 所有文件tf结果.key:文件名, value:该文件tf
+     * 所有文件tf结果
+     * key:文件名, value:该文件tf
      */
     private static Map<String, Map<String, Double>> allTfMap = new HashMap<>();
 
     /**
-     * 所有文件分词结果.key:文件名, value:该文件分词统计
+     * 所有文件分词结果
+     * key:文件名, value:该文件分词统计
      */
     private static Map<String, Map<String, Integer>> allSegsMap = new HashMap<>();
 
     /**
-     * 所有文件分词的idf结果.key:文件名, value:词w在整个文档集合中的逆向文档频率idf (Inverse Document Frequency), 即文档总数n与词w所出现文件数docs(w, D)比值的对数
+     * 所有文件分词的idf结果
+     * key: 文件名,
+     * value: 词w在整个文档集合中的逆向文档频率idf (Inverse Document Frequency), 即文档总数n与词w所出现文件数docs(w, D)比值的对数
      */
     private static Map<String, Double> idfMap = new HashMap<>();
 
     /**
-     * 统计包含单词的文档数  key:单词  value:包含该词的文档数
+     * 统计包含单词的文档数
+     * key: 单词, value: 包含该词的文档数
      */
     private static Map<String, Integer> containWordOfAllDocNumberMap = new HashMap<>();
 
     /**
      * 统计单词的TF-IDF
-     * key:文件名 value:该文件tf-idf
+     * key:文件名, value:该文件tf-idf
      */
     private static Map<String, Map<String, Double>> tfIdfMap = new HashMap<>();
 
 
     /**
-     * @param @param  filepath
-     * @param @return List<String>
-     * @param @throws FileNotFoundException
-     * @param @throws IOException
-     * @return List<String>
-     * @throws
-     * @Title: readDirs
-     * @Description: 递归获取文件
+     * <p>读取指定目录下及其子目录内的所有文件
+     *
+     * @param directory 目录路径
+     * @return 文件列表
      */
-    private static List<String> readDirs(String filepath) throws IOException {
-        File file = new File(filepath);
-        if (!file.isDirectory()) {
-            System.out.println("输入的参数应该为[文件夹名]");
-            System.out.println("filepath: " + file.getAbsolutePath());
-        } else if (file.isDirectory()) {
-            String[] filelist = file.list();
-            for (int i = 0; i < filelist.length; i++) {
-                File readfile = new File(filepath + File.separator + filelist[i]);
-                if (!readfile.isDirectory()) {
-                    fileList.add(readfile.getAbsolutePath());
-                } else if (readfile.isDirectory()) {
-                    readDirs(filepath + File.separator + filelist[i]);
-                }
+    private static List<String> readDirs(String directory) {
+        final List<String> fileList = new ArrayList<>();
+        Path path = Paths.get(directory);
+        try {
+            if (Files.isDirectory(path)) {
+                Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                        fileList.add(file.getFileName().toFile().getAbsolutePath());
+                        return FileVisitResult.CONTINUE;
+                    }
+                })
+                ;
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
         return fileList;
     }
 
     /**
-     * @param @param  file
-     * @param @return String
-     * @param @throws FileNotFoundException
-     * @param @throws IOException
-     * @return String
-     * @throws
-     * @Title: readFile
-     * @Description: 读取文件转化成string
+     * <p>将读取的文件转化成String.
+     *
+     * @param filePath 文件路径
+     * @return java.lang.String
      */
-    private static String readFile(String file) throws IOException {
-        StringBuffer sb = new StringBuffer();
-        InputStreamReader is = new InputStreamReader(new FileInputStream(file), "UTF-8");
-        BufferedReader br = new BufferedReader(is);
-        String line = br.readLine();
-        while (line != null) {
-            sb.append(line).append("\r\n");
-            line = br.readLine();
+    private static String readFile(String filePath) {
+        StringBuilder sb = new StringBuilder();
+
+        try {
+            Files.readAllLines(Paths.get(filePath), StandardCharsets.UTF_8).forEach(line -> sb.append(line).append("\r\n"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        br.close();
+
         return sb.toString();
     }
 
-
     /**
-     * @param @param  content
-     * @param @return Map<String, Integer>
-     * @return Map<String, Integer>
-     * @throws
-     * @Title: segString
-     * @Description: 用ik进行字符串分词, 统计各个词出现的次数
+     * <p>用ik进行字符串分词, 统计各个词出现的次数.
+     *
+     * @param content 文本内容
+     * @return 各个词出现的次数
      */
     private static Map<String, Integer> segString(String content) {
         // 分词
         Reader input = new StringReader(content);
-        // 智能分词关闭（对分词的精度影响很大）
+        // 智能分词关闭 (对分词的精度影响很大)
         IKSegmenter iks = new IKSegmenter(input, true);
-        Lexeme lexeme = null;
+        Lexeme lexeme;
         Map<String, Integer> words = new HashMap<>();
         try {
             while ((lexeme = iks.next()) != null) {
@@ -129,19 +125,17 @@ public class TfIdfAlgorithm {
     }
 
     /**
-     * @param @param  content
-     * @param @return
-     * @return Map<String, Integer>
-     * @throws
-     * @Title: segStr
-     * @Description: 返回LinkedHashMap的分词
+     * <p>返回LinkedHashMap的分词.
+     *
+     * @param content 文本内容
+     * @return
      */
     public static Map<String, Integer> segStr(String content) {
         // 分词
         Reader input = new StringReader(content);
         // 智能分词关闭（对分词的精度影响很大）
         IKSegmenter iks = new IKSegmenter(input, true);
-        Lexeme lexeme = null;
+        Lexeme lexeme;
         Map<String, Integer> words = new LinkedHashMap<>();
         try {
             while ((lexeme = iks.next()) != null) {
@@ -158,23 +152,18 @@ public class TfIdfAlgorithm {
     }
 
     public static Map<String, Integer> getMostFrequentWords(int num, Map<String, Integer> words) {
-
         Map<String, Integer> keywords = new LinkedHashMap<>();
         int count = 0;
         // 词频统计
-        List<Map.Entry<String, Integer>> info = new ArrayList<>(words.entrySet());
-        Collections.sort(info, new Comparator<Map.Entry<String, Integer>>() {
-            public int compare(Map.Entry<String, Integer> obj1, Map.Entry<String, Integer> obj2) {
-                return obj2.getValue() - obj1.getValue();
-            }
-        });
+        List<Map.Entry<String, Integer>> infoMap = new ArrayList<>(words.entrySet());
+        Collections.sort(infoMap, (o1, o2) -> o2.getValue() - o1.getValue());
 
         // 高频词输出
-        for (int j = 0; j < info.size(); j++) {
+        for (Map.Entry<String, Integer> entry : infoMap) {
             // 词-->频
-            if (info.get(j).getKey().length() > 1) {
+            if (entry.getKey().length() > 1) {
                 if (num > count) {
-                    keywords.put(info.get(j).getKey(), info.get(j).getValue());
+                    keywords.put(entry.getKey(), entry.getValue());
                     count++;
                 } else {
                     break;
@@ -185,17 +174,14 @@ public class TfIdfAlgorithm {
     }
 
     /**
-     * @param @param  segWordsResult
-     * @param @return
-     * @return HashMap<String, Double>
-     * @throws
-     * @Title: tf
-     * @Description: 分词结果转化为tf, 公式为:tf(w,d) = count(w, d) / size(d)
-     * 即词w在文档d中出现次数count(w, d)和文档d中总词数size(d)的比值
+     * <p>分词结果转化为tf, 公式为: tf(w,d) = count(w, d) / size(d)
+     * 即词w在文档d中出现次数count(w, d)和文档d中总词数size(d)的比值</p>
+     *
+     * @param segWordsResult
+     * @return TF
      */
     private static HashMap<String, Double> tf(Map<String, Integer> segWordsResult) {
-
-        HashMap<String, Double> tf = new HashMap<>(); // 正规化
+        HashMap<String, Double> tf = new HashMap<>();   // 正规化
         if (segWordsResult == null || segWordsResult.size() == 0) {
             return tf;
         }
@@ -209,58 +195,46 @@ public class TfIdfAlgorithm {
     }
 
     /**
-     * @param @param  dir
-     * @param @return Map<String, Map<String, Double>>
-     * @return Map<String, Map<String, Double>>
-     * @throws
-     * @Title: allTf
-     * @Description: 得到所有文件的tf
+     * <p>得到所有文件的tf.
+     *
+     * @param dir
+     * @return {@link #allTfMap}
      */
     public static Map<String, Map<String, Double>> allTf(String dir) {
-        try {
-            fileList = readDirs(dir);
-            for (String filePath : fileList) {
-                String content = readFile(filePath);
-                Map<String, Integer> segs = segString(content);
-                allSegsMap.put(filePath, segs);
-                allTfMap.put(filePath, tf(segs));
-            }
-        } catch (IOException io) {
-            io.printStackTrace();
+        List<String> fileList = readDirs(dir);
+        for (String filePath : fileList) {
+            String content = readFile(filePath);
+            Map<String, Integer> segs = segString(content);
+            allSegsMap.put(filePath, segs);
+            allTfMap.put(filePath, tf(segs));
         }
+
         return allTfMap;
     }
 
     /**
-     * @param @param  dir
-     * @param @return
-     * @return Map<String,Map<String,Integer>>
-     * @throws
-     * @Title: wordSegCount
-     * @Description: 返回分词结果, 以LinkedHashMap保存
+     * <p>wordSegCount 返回分词结果, 以LinkedHashMap保存.
+     *
+     * @param dir
+     * @return {@link #allSegsMap}
      */
     public static Map<String, Map<String, Integer>> wordSegCount(String dir) {
-        try {
-            fileList = readDirs(dir);
-            for (String filePath : fileList) {
-                String content = readFile(filePath);
-                Map<String, Integer> segs = segStr(content);
-                allSegsMap.put(filePath, segs);
-            }
-        } catch (IOException io) {
-            io.printStackTrace();
+        List<String> fileList = readDirs(dir);
+        for (String filePath : fileList) {
+            String content = readFile(filePath);
+            Map<String, Integer> segs = segStr(content);
+            allSegsMap.put(filePath, segs);
         }
+
         return allSegsMap;
     }
 
 
     /**
-     * @param @param  allSegsMap
-     * @param @return
-     * @return Map<String, Integer>
-     * @throws
-     * @Title: containWordOfAllDocNumber
-     * @Description: 统计包含单词的文档数  key:单词  value:包含该词的文档数
+     * <p>统计包含单词的文档数  key:单词  value:包含该词的文档数.
+     *
+     * @param allSegsMap
+     * @return {@link #containWordOfAllDocNumberMap}
      */
     private static Map<String, Integer> containWordOfAllDocNumber(Map<String, Map<String, Integer>> allSegsMap) {
         if (allSegsMap == null || allSegsMap.size() == 0) {
@@ -289,17 +263,16 @@ public class TfIdfAlgorithm {
     }
 
     /**
-     * @param @param  containWordOfAllDocNumberMap
-     * @param @return Map<String, Double>
-     * @return Map<String, Double>
-     * @throws
-     * @Title: idf
-     * @Description: idf = log(n / docs(w, D))
+     * <p>idf = log(n / docs(w, D))
+     *
+     * @param allSegsMap
+     * @return {@link #idfMap}
      */
     public static Map<String, Double> idf(Map<String, Map<String, Integer>> allSegsMap) {
         if (allSegsMap == null || allSegsMap.size() == 0) {
             return idfMap;
         }
+
         containWordOfAllDocNumberMap = containWordOfAllDocNumber(allSegsMap);
         Set<String> words = containWordOfAllDocNumberMap.keySet();
         Double wordSize = (double) containWordOfAllDocNumberMap.size();
@@ -311,14 +284,13 @@ public class TfIdfAlgorithm {
     }
 
     /**
-     * @param @param tf,idf
-     * @return Map<String, Map<String, Double>>
-     * @throws
-     * @Title: tfIdf
-     * @Description: tf-idf
+     * <p>TF-IDF
+     *
+     * @param allTfMap
+     * @param idf
+     * @return {@link #tfIdfMap}
      */
     public static Map<String, Map<String, Double>> tfIdf(Map<String, Map<String, Double>> allTfMap, Map<String, Double> idf) {
-
         Set<String> fileList = allTfMap.keySet();
         for (String filePath : fileList) {
             Map<String, Double> tfMap = allTfMap.get(filePath);
@@ -331,38 +303,38 @@ public class TfIdfAlgorithm {
             }
             tfIdfMap.put(filePath, docTfIdf);
         }
+
         return tfIdfMap;
     }
 
 
     public static void main(String[] args) {
-
         System.out.println("tf--------------------------------------");
-        Map<String, Map<String, Double>> allTfMap = TfIdfAlgorithm.allTf("d://dir");
+        Map<String, Map<String, Double>> allTfMap = TfIdf.allTf(".");
         Set<String> fileList = allTfMap.keySet();
         for (String filePath : fileList) {
             Map<String, Double> tfMap = allTfMap.get(filePath);
             Set<String> words = tfMap.keySet();
             for (String word : words) {
-                System.out.println("fileName:" + filePath + "     word:" + word + "      tf:" + tfMap.get(word));
+                System.out.println("fileName:" + filePath + "   word:" + word + "   tf:" + tfMap.get(word));
             }
         }
 
         System.out.println("idf--------------------------------------");
-        Map<String, Double> idfMap = TfIdfAlgorithm.idf(allSegsMap);
+        Map<String, Double> idfMap = TfIdf.idf(allSegsMap);
         Set<String> words = idfMap.keySet();
         for (String word : words) {
-            System.out.println("word:" + word + "     tf:" + idfMap.get(word));
+            System.out.println("word:" + word + "   tf:" + idfMap.get(word));
         }
 
         System.out.println("tf-idf--------------------------------------");
-        Map<String, Map<String, Double>> tfIdfMap = TfIdfAlgorithm.tfIdf(allTfMap, idfMap);
+        Map<String, Map<String, Double>> tfIdfMap = TfIdf.tfIdf(allTfMap, idfMap);
         Set<String> files = tfIdfMap.keySet();
         for (String filePath : files) {
             Map<String, Double> tfIdf = tfIdfMap.get(filePath);
             Set<String> segs = tfIdf.keySet();
             for (String word : segs) {
-                System.out.println("fileName:" + filePath + "     word:" + word + "        tf-idf:" + tfIdf.get(word));
+                System.out.println("fileName:" + filePath + "   word:" + word + "   tf-idf:" + tfIdf.get(word));
             }
         }
     }

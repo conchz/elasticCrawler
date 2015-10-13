@@ -14,18 +14,16 @@ import java.util.Map;
 public class CosineSimilarAlgorithm {
 
     /**
-     * @param @param  firstFile
-     * @param @param  secondFile
-     * @param @return
-     * @return Double
-     * @throws
-     * @Title: cosSimilarityByFile
-     * @Description: 获取两个文件相似性
+     * <p>获取两个文件相似性.
+     *
+     * @param firstFile  第一个文件
+     * @param secondFile 第二个文件
+     * @return 文件相似性
      */
     public static Double cosSimilarityByFile(String firstFile, String secondFile) {
         try {
-            Map<String, Map<String, Integer>> firstTfMap = TfIdfAlgorithm.wordSegCount(firstFile);
-            Map<String, Map<String, Integer>> secondTfMap = TfIdfAlgorithm.wordSegCount(secondFile);
+            Map<String, Map<String, Integer>> firstTfMap = TfIdf.wordSegCount(firstFile);
+            Map<String, Map<String, Integer>> secondTfMap = TfIdf.wordSegCount(secondFile);
             if (firstTfMap == null || firstTfMap.size() == 0) {
                 throw new IllegalArgumentException("firstFile not found or firstFile is empty! ");
             }
@@ -48,18 +46,16 @@ public class CosineSimilarAlgorithm {
     }
 
     /**
-     * @param @param  first
-     * @param @param  second
-     * @param @return
-     * @return Double
-     * @throws
-     * @Title: cosSimilarityByString
-     * @Description: 得到两个字符串的相似性
+     * <p>获取两个字符串的相似性.
+     *
+     * @param first  第一个字符串
+     * @param second 第二个字符串
+     * @return 相似程度
      */
     public static Double cosSimilarityByString(String first, String second) {
         try {
-            Map<String, Integer> firstTfMap = TfIdfAlgorithm.segStr(first);
-            Map<String, Integer> secondTfMap = TfIdfAlgorithm.segStr(second);
+            Map<String, Integer> firstTfMap = TfIdf.segStr(first);
+            Map<String, Integer> secondTfMap = TfIdf.segStr(second);
             if (firstTfMap.size() < secondTfMap.size()) {
                 Map<String, Integer> temp = firstTfMap;
                 firstTfMap = secondTfMap;
@@ -74,13 +70,11 @@ public class CosineSimilarAlgorithm {
     }
 
     /**
-     * @param @param  first
-     * @param @param  second
-     * @param @return
-     * @return Double
-     * @throws
-     * @Title: calculateCos
-     * @Description: 计算余弦相似性
+     * <p>计算余弦相似性.
+     *
+     * @param first  第一个字符串
+     * @param second 第二个字符串
+     * @return 余弦相似性
      */
     private static Double calculateCos(LinkedHashMap<String, Integer> first, LinkedHashMap<String, Integer> second) {
 
@@ -102,8 +96,9 @@ public class CosineSimilarAlgorithm {
     }
 
     public static void main(String[] args) {
-        Double result = cosSimilarityByString("关于王立军，有几个基本事实。首先，1月28日我是初次听到此事，并不相信谷开来会杀人，我跟11·15杀人案无关，我不是谷开来11·15杀人罪的共犯，这个大家都认可",
-                "实际上免他是有这些原因的，绝不只是一个谷开来的原因。这是多因一果。");
+        Double result = cosSimilarityByString("Scala可伸缩的语言是一门多范式的编程语言，一种类似java的编程语言，设计初衷是要集成面向对象编程和函数式编程的各种特性。",
+                "Scala编程语言抓住了很多开发者的眼球。如果你粗略浏览Scala的网站，你会觉得Scala是一种纯粹的面向对象编程语言，而又无缝地结合了命令式和函数式的编程风格。");
+
         System.out.println(result);
     }
 }
