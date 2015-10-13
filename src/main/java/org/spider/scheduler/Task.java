@@ -16,6 +16,18 @@ public class Task implements Serializable {
 
     private String charset;
 
+    /**
+     * 爬取深度
+     */
+    private int layer;
+
+    /**
+     * -1: 爬取失败
+     * 0: 未进行爬取
+     * 1: 已成功爬取
+     */
+    private int status;
+
     private Downloader downloader;
 
     private Extractor extractor;
@@ -36,6 +48,24 @@ public class Task implements Serializable {
 
     public Task setCharset(String charset) {
         this.charset = charset;
+        return this;
+    }
+
+    public int getLayer() {
+        return layer;
+    }
+
+    public Task setLayer(int layer) {
+        this.layer = layer;
+        return this;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public Task setStatus(int status) {
+        this.status = status;
         return this;
     }
 

@@ -1,6 +1,5 @@
 package org.spider.core;
 
-import org.spider.extractor.Page;
 import org.spider.scheduler.Task;
 import org.spider.util.Logs;
 import rx.functions.Action1;
@@ -17,8 +16,8 @@ public class ScrapeWorker extends Logs implements Action1<Task> {
     @Override
     public void call(Task task) {
         try {
-            Page page = new Page(task.getUrl(), task.getDownloader().download(task), task.getCharset());
-            task.getExtractor().extract(page);
+            String content = task.getDownloader().download(task).toString();
+            task.getExtractor().extract(content);
         } catch (IOException e) {
             e.printStackTrace();
         }

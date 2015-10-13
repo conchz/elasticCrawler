@@ -4,6 +4,7 @@ import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
@@ -15,8 +16,6 @@ import org.spider.util.Logs;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-
-import static org.apache.http.client.protocol.HttpClientContext.COOKIE_STORE;
 
 /**
  * {@code HttpClientDownloader} is a implementation of {@link HttpClient}
@@ -39,7 +38,7 @@ public class HttpClientDownloader extends Logs implements Downloader {
         CloseableHttpClient httpClient = httpClientPool.createHttpClient();
         CookieStore cookieStore = new BasicCookieStore();
         HttpContext localContext = new BasicHttpContext();
-        localContext.setAttribute(COOKIE_STORE, cookieStore);
+        localContext.setAttribute(HttpClientContext.COOKIE_STORE, cookieStore);
         logger.debug("Downloading url: {}", task.getUrl());
         try (CloseableHttpResponse response = httpClient.execute(new HttpGet(task.getUrl()), localContext)) {
             return EntityUtils.toString(response.getEntity(), Charset.forName(task.getCharset()));

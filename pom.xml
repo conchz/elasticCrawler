@@ -132,6 +132,13 @@
             <artifactId>ansj_seg</artifactId>
             <version>3.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.wltea.analyzer</groupId>
+            <artifactId>IKAnalyzer</artifactId>
+            <version>2012_FF</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/IKAnalyzer2012_FF.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>

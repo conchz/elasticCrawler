@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.spider.scheduler.Task;
+import org.spider.util.Logs;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,7 +18,10 @@ import java.util.concurrent.TimeUnit;
  *
  * @author dolphineor
  */
-public class SeleniumDownloader implements Downloader {
+public class SeleniumDownloader extends Logs implements Downloader {
+
+    private static Downloader downloader;
+
 
     @Override
     public String download(Task task) throws IOException {
@@ -31,17 +35,24 @@ public class SeleniumDownloader implements Downloader {
         caps.setCapability("chrome.prefs", preferences);
         WebDriver webDriver = new ChromeDriver(caps);
         webDriver.get(task.getUrl());
-        sleep(1, TimeUnit.SECONDS);
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         WebElement webElement = webDriver.findElement(By.xpath("/html"));
         webDriver.close();
         return webElement.getAttribute("outerHTML");
     }
 
-    private void sleep(long time, TimeUnit unit) {
-        try {
-            unit.sleep(time);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    public static Downloader create() {
+        if (downloader == null) {
+            synchronized (SeleniumDownloader.class) {
+                if (downloader == null)
+                    downloader = new SeleniumDownloader();
+            }
         }
+        return downloader;
     }
+
 }

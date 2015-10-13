@@ -1,6 +1,5 @@
 package org.spider.filter.simhash;
 
-import org.spider.extractor.Page;
 import org.spider.filter.IFilter;
 
 import java.math.BigInteger;
@@ -15,8 +14,8 @@ import java.math.BigInteger;
 public class SimHashFilter implements IFilter {
 
     @Override
-    public float similar(Page page) {
-        SimHash simHash = new SimHash(page.getContent());
+    public float similar(String content) {
+        SimHash simHash = new SimHash(content);
         BigInteger hash = simHash.simHash();
 
         float resultNum = 0;

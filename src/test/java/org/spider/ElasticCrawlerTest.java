@@ -29,6 +29,8 @@ public class ElasticCrawlerTest {
             task.setCharset("GBK");
             k = encode(k, UTF_8.name());
             task.setUrl(String.format(scrapeUrl, k));
+            task.setLayer(0);
+            task.setStatus(0);
             task.setDownloader(HttpClientDownloader.create());
             task.setExtractor(HtmlExtractor.create());
             tasks.add(task);

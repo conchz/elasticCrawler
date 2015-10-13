@@ -1,7 +1,6 @@
 package org.spider.filter.simhash;
 
 import org.nlpcn.commons.lang.finger.FingerprintService;
-import org.spider.extractor.Page;
 import org.spider.filter.IFilter;
 import org.spider.util.Logs;
 
@@ -24,9 +23,8 @@ public class AnsjFingerPrintFilter extends Logs implements IFilter {
 
 
     @Override
-    public float similar(Page page) {
-        String fingerprint = new FingerprintService().fingerprint(page
-                .getContent());
+    public float similar(String content) {
+        String fingerprint = new FingerprintService().fingerprint(content);
         logger.info("生成的指纹信息为：{}", fingerprint);
 
         // 判断指纹信息是否存在

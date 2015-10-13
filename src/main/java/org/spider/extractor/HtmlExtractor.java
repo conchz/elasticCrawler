@@ -6,14 +6,16 @@ import org.jsoup.nodes.Document;
 /**
  * @author dolphineor
  */
-public class HtmlExtractor implements Extractor {
+public class HtmlExtractor implements Extractor<String> {
 
     private static Extractor extractor;
 
 
     @Override
-    public void extract(Page page) {
-        Document doc = Jsoup.parse(page.getContent());
+    public String extract(String content) {
+        Document doc = Jsoup.parse(content);
+
+        return doc.outerHtml();
     }
 
     public static Extractor create() {

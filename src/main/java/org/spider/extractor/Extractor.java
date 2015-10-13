@@ -7,8 +7,9 @@ import java.io.Serializable;
  *
  * @author dolphineor
  */
-public interface Extractor extends Serializable {
+@FunctionalInterface
+public interface Extractor<T> extends Serializable {
 
-    void extract(Page page);
+    T extract(String content);
 
 }

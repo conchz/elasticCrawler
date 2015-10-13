@@ -1,6 +1,5 @@
 package org.spider.filter.rabin;
 
-import org.spider.extractor.Page;
 import org.spider.filter.IFilter;
 
 import java.util.HashSet;
@@ -22,10 +21,10 @@ public class RabinHashFilter implements IFilter {
     }
 
     @Override
-    public float similar(Page page) {
+    public float similar(String content) {
         float value = 1;
         RabinHashFunction32 rabin = new RabinHashFunction32(rabinCount);
-        int rabinCode = rabin.hash(page.getUrl());
+        int rabinCode = rabin.hash(content);
         if (!set.contains(rabinCode)) {
             value = 0;
             set.add(rabinCode);

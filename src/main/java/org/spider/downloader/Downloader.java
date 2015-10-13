@@ -12,6 +12,7 @@ import java.io.Serializable;
  *
  * @author dolphineor
  */
+@FunctionalInterface
 public interface Downloader extends Serializable {
 
     String download(Task task) throws IOException;

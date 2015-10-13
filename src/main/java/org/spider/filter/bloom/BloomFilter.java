@@ -1,7 +1,6 @@
 package org.spider.filter.bloom;
 
 import com.google.common.hash.Funnels;
-import org.spider.extractor.Page;
 import org.spider.filter.IFilter;
 
 import java.nio.charset.Charset;
@@ -52,11 +51,11 @@ public class BloomFilter implements IFilter {
     }
 
     @Override
-    public float similar(Page page) {
+    public float similar(String content) {
         float similarValue = 1;
-        boolean isDuplicate = bloomFilter.mightContain(page.getUrl());
+        boolean isDuplicate = bloomFilter.mightContain(content);
         if (!isDuplicate) {
-            bloomFilter.put(page.getUrl());
+            bloomFilter.put(content);
             counter.incrementAndGet();
             similarValue = 0;
         }
