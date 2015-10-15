@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.IntStream;
 
 /**
  * Created on 2015-01-18.
@@ -48,7 +49,7 @@ public class ElasticCrawler {
     public void runAsync() {
         executor.execute(() -> {
             final ScrapeWorker scrapeWorker = new ScrapeWorker();
-            for (int i = 0; i < scrapeThreadNum; i++) {
+            IntStream.range(0, scrapeThreadNum).forEach(i -> {
                 executor.execute(() -> {
                     for (; ; )
                         Optional.ofNullable(taskQueue.take())
@@ -56,7 +57,7 @@ public class ElasticCrawler {
                 });
 
                 latch.countDown();
-            }
+            });
         });
 
         try {
