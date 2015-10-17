@@ -5,13 +5,16 @@ import com.typesafe.config.ConfigFactory;
 import org.spider.scheduler.MemoryTaskQueue;
 import org.spider.scheduler.Task;
 import org.spider.scheduler.TaskQueue;
+import org.spider.util.Logs;
 import rx.Observable;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 /**
@@ -19,41 +22,123 @@ import java.util.stream.IntStream;
  *
  * @author dolphineor
  */
-public class ElasticCrawler {
+public class ElasticCrawler extends Logs {
 
-    /**
-     * Spider configurations
-     */
-    public static Config config = ConfigFactory.defaultApplication();
+    public static Config config;
 
 
-    private final int scrapeThreadNum = config.getInt("spider.thread.tNum");
+    protected static final int STATUS_INIT = 0;
 
-    private final ExecutorService executor = Executors.newFixedThreadPool(scrapeThreadNum);
+    protected static final int STATUS_RUNNING = 1;
 
-    private final CountDownLatch latch = new CountDownLatch(scrapeThreadNum);
+    protected static final int STATUS_STOPPED = -1;
 
-    private final TaskQueue taskQueue;
+    protected final AtomicInteger status = new AtomicInteger(STATUS_INIT);
+
+    protected final int scrapeThreadNum;
+
+    protected final ExecutorService executor;
+
+    protected final CountDownLatch latch;
+
+    protected final boolean exitWhenComplete;
+
+    protected final TaskQueue taskQueue;
 
 
     protected ElasticCrawler(TaskQueue taskQueue) {
+        loadConfig();
+
         this.taskQueue = taskQueue;
+        this.scrapeThreadNum = config.getInt("spider.threadNum");
+        this.executor = Executors.newFixedThreadPool(scrapeThreadNum);
+        this.latch = new CountDownLatch(scrapeThreadNum);
+        this.exitWhenComplete = config.getBoolean("spider.exitWhenComplete");
     }
 
 
     public ElasticCrawler addTask(List<Task> tasks) {
-        tasks.stream().forEach(taskQueue::offer);
+        tasks.forEach(taskQueue::offer);
         return this;
     }
 
+    public Status getStatus() {
+        return Status.fromValue(status.get());
+    }
+
+    protected enum Status {
+        INIT(0), RUNNING(1), STOPPED(-1);
+
+        private final int value;
+
+        Status(int value) {
+            this.value = value;
+        }
+
+        int value() {
+            return value;
+        }
+
+        public static Status fromValue(int value) {
+            for (Status status : Status.values()) {
+                if (status.value() == value) {
+                    return status;
+                }
+            }
+
+            // default value
+            return INIT;
+        }
+    }
+
+    public boolean isExitWhenComplete() {
+        return exitWhenComplete;
+    }
+
+    protected void loadConfig() {
+        if (Objects.isNull(config)) {
+            synchronized (this) {
+                if (Objects.isNull(config)) {
+                    config = ConfigFactory.defaultApplication();
+                }
+            }
+        }
+    }
+
+    protected void initSpider() {
+        synchronized (status) {
+            while (true) {
+                int nowStatus = status.get();
+                if (nowStatus == STATUS_RUNNING) {
+                    throw new IllegalStateException("Spider is already running!");
+                }
+
+                if (status.compareAndSet(nowStatus, STATUS_RUNNING)) {
+                    break;
+                }
+            }
+        }
+    }
+
     public void runAsync() {
+        initSpider();
+
         executor.execute(() -> {
             final ScrapeWorker scrapeWorker = new ScrapeWorker();
             IntStream.range(0, scrapeThreadNum).forEach(i -> {
                 executor.execute(() -> {
-                    for (; ; )
-                        Optional.ofNullable(taskQueue.take())
-                                .ifPresent(task -> Observable.just(task).subscribe(scrapeWorker));
+                    while (status.get() == STATUS_RUNNING) {
+                        Optional<Task> taskOptional = Optional.ofNullable(taskQueue.take());
+                        if (taskOptional.isPresent()) {
+                            Observable.just(taskOptional.get()).subscribe(scrapeWorker);
+                        } else {
+                            if (isExitWhenComplete()) {
+                                stop();
+                                break;
+                            }
+                        }
+
+                    }
                 });
 
                 latch.countDown();
@@ -65,6 +150,20 @@ public class ElasticCrawler {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void start() {
+        runAsync();
+    }
+
+    public void stop() {
+        if (!executor.isShutdown())
+            executor.shutdown();
+
+        if (status.compareAndSet(STATUS_RUNNING, STATUS_STOPPED))
+            logger.info("Spider stop succeeded!");
+        else
+            logger.info("Spider stop failed!");
     }
 
     public static ElasticCrawler create() {

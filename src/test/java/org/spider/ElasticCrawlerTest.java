@@ -19,16 +19,17 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class ElasticCrawlerTest {
 
     public static void main(String[] args) throws Exception {
-        String scrapeUrl = "http://search.jd.com/Search?keyword=%s&enc=utf-8";
+        ElasticCrawler crawler = ElasticCrawler.create();
 
-        String[] arr = {"冬装", "毛衣", "羽绒服", "书包", "手套", "夹克", "卫衣", "暖宝宝", "围巾", "手机"};
+        String scrapeUrl = "http://search.jd.com/Search?keyword=%s&enc=utf-8";
+        String[] arr = {"冬装", "毛衣", "羽绒服", "书包", "手套", "夹克", "卫衣", "暖宝宝", "围巾", "风衣"};
         List<Task> tasks = new ArrayList<>();
 
-        for (String k : arr) {
+        for (String keyword : arr) {
             Task task = new Task();
             task.setCharset("GBK");
-            k = encode(k, UTF_8.name());
-            task.setUrl(String.format(scrapeUrl, k));
+            keyword = encode(keyword, UTF_8.name());
+            task.setUrl(String.format(scrapeUrl, keyword));
             task.setLayer(0);
             task.setStatus(0);
             task.setDownloader(HttpClientDownloader.create());
@@ -38,7 +39,6 @@ public class ElasticCrawlerTest {
 
 
         // start a elasticCrawler
-        ElasticCrawler crawler = ElasticCrawler.create().addTask(tasks);
-        crawler.runAsync();
+        crawler.addTask(tasks).start();
     }
 }
