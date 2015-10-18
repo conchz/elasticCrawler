@@ -22,7 +22,7 @@ import java.util.stream.IntStream;
  *
  * @author dolphineor
  */
-public class ElasticCrawler extends Logs {
+public class ElasticCrawler extends Logs implements Runnable {
 
     public static Config config;
 
@@ -33,7 +33,7 @@ public class ElasticCrawler extends Logs {
 
     protected static final int STATUS_STOPPED = -1;
 
-    protected final AtomicInteger status = new AtomicInteger(STATUS_INIT);
+    protected final AtomicInteger status;
 
     protected final int scrapeThreadNum;
 
@@ -47,12 +47,15 @@ public class ElasticCrawler extends Logs {
 
 
     protected ElasticCrawler(TaskQueue taskQueue) {
+        logger.info("Initializing Spider...");
         loadConfig();
 
+        // Initialize Spider
         this.taskQueue = taskQueue;
         this.scrapeThreadNum = config.getInt("spider.threadNum");
         this.executor = Executors.newFixedThreadPool(scrapeThreadNum);
         this.latch = new CountDownLatch(scrapeThreadNum);
+        this.status = new AtomicInteger(STATUS_INIT);
         this.exitWhenComplete = config.getBoolean("spider.exitWhenComplete");
     }
 
@@ -64,6 +67,49 @@ public class ElasticCrawler extends Logs {
 
     public Status getStatus() {
         return Status.fromValue(status.get());
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            int nowStatus = status.get();
+            if (nowStatus == STATUS_RUNNING) {
+                throw new IllegalStateException("Spider is already running!");
+            }
+
+            if (status.compareAndSet(nowStatus, STATUS_RUNNING)) {
+                break;
+            }
+        }
+        logger.info("Spider start succeeded!");
+
+        executor.execute(() -> {
+            final ScrapeWorker scrapeWorker = new ScrapeWorker();
+            IntStream.range(0, scrapeThreadNum).forEach(i -> {
+                executor.execute(() -> {
+                    while (status.get() == STATUS_RUNNING) {
+                        Optional<Task> taskOptional = Optional.ofNullable(taskQueue.take());
+                        if (taskOptional.isPresent()) {
+                            Observable.just(taskOptional.get()).subscribe(scrapeWorker);
+                        } else {
+                            if (isExitWhenComplete()) {
+                                stop();
+                                break;
+                            }
+                        }
+
+                    }
+                });
+
+                latch.countDown();
+            });
+        });
+
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     protected enum Status {
@@ -105,51 +151,10 @@ public class ElasticCrawler extends Logs {
         }
     }
 
-    protected void initSpider() {
-        synchronized (status) {
-            while (true) {
-                int nowStatus = status.get();
-                if (nowStatus == STATUS_RUNNING) {
-                    throw new IllegalStateException("Spider is already running!");
-                }
-
-                if (status.compareAndSet(nowStatus, STATUS_RUNNING)) {
-                    break;
-                }
-            }
-        }
-    }
-
     public void runAsync() {
-        initSpider();
-
-        executor.execute(() -> {
-            final ScrapeWorker scrapeWorker = new ScrapeWorker();
-            IntStream.range(0, scrapeThreadNum).forEach(i -> {
-                executor.execute(() -> {
-                    while (status.get() == STATUS_RUNNING) {
-                        Optional<Task> taskOptional = Optional.ofNullable(taskQueue.take());
-                        if (taskOptional.isPresent()) {
-                            Observable.just(taskOptional.get()).subscribe(scrapeWorker);
-                        } else {
-                            if (isExitWhenComplete()) {
-                                stop();
-                                break;
-                            }
-                        }
-
-                    }
-                });
-
-                latch.countDown();
-            });
-        });
-
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Thread thread = new Thread(this, "Thread-ElasticCrawler-Main");
+        thread.setDaemon(false);
+        thread.start();
     }
 
     public void start() {
@@ -157,14 +162,19 @@ public class ElasticCrawler extends Logs {
     }
 
     public void stop() {
-        if (!executor.isShutdown())
+        if (executor.isShutdown()) {
+            throw new IllegalStateException("Spider has already stopped!");
+        } else {
             executor.shutdown();
+        }
 
-        if (status.compareAndSet(STATUS_RUNNING, STATUS_STOPPED))
+        if (status.compareAndSet(STATUS_RUNNING, STATUS_STOPPED)) {
             logger.info("Spider stop succeeded!");
-        else
+        } else {
             logger.info("Spider stop failed!");
+        }
     }
+
 
     public static ElasticCrawler create() {
         return new ElasticCrawler(new MemoryTaskQueue());

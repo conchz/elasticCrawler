@@ -1,4 +1,4 @@
-package org.spider.bdb;
+package org.spider.scheduler.bdb;
 
 /**
  * Created on 2015-08-29.

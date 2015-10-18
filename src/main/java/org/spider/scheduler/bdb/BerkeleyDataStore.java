@@ -1,11 +1,12 @@
-package org.spider.bdb;
+package org.spider.scheduler.bdb;
 
-import org.spider.util.Logs;
 import com.google.common.base.Strings;
 import com.sleepycat.je.*;
+import org.spider.util.Logs;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,7 +31,7 @@ public class BerkeleyDataStore extends Logs implements KeyValueDataStore<String,
     public BerkeleyDataStore() {
     }
 
-    
+
     public void init(String dbName) {
         logger.info("打开数据库: " + dbName);
         EnvironmentConfig envConfig = new EnvironmentConfig();
@@ -53,13 +54,13 @@ public class BerkeleyDataStore extends Logs implements KeyValueDataStore<String,
     @Override
     public void putToStore(String dbName, String key, String value) {
         DatabaseEntry theKey;
-        Transaction tx;
-        tx = this.myDbEnvironment.beginTransaction(null, null);
+        Transaction txn;
+        txn = this.myDbEnvironment.beginTransaction(null, null);
         theKey = new DatabaseEntry(Strings.nullToEmpty(key).getBytes(
                 StandardCharsets.UTF_8));
         DatabaseEntry theData = new DatabaseEntry(Strings.nullToEmpty(value)
                 .getBytes(StandardCharsets.UTF_8));
-        OperationStatus res = myDatabase.put(tx, theKey, theData);
+        OperationStatus res = myDatabase.put(txn, theKey, theData);
         if (res == OperationStatus.SUCCESS) {
             logger.info("向数据库 {} 中写入:{}, {}", dbName, key, value);
         } else if (res == OperationStatus.KEYEXIST) {
@@ -67,9 +68,11 @@ public class BerkeleyDataStore extends Logs implements KeyValueDataStore<String,
         } else {
             logger.info("向数据库 {} 中写入:{}, {}失败", dbName, key, value);
         }
-        tx.commit();
-        if (tx != null) {
-            tx.abort();
+
+        txn.commit();
+
+        if (Objects.nonNull(txn)) {
+            txn.abort();
         }
     }
 
@@ -80,9 +83,9 @@ public class BerkeleyDataStore extends Logs implements KeyValueDataStore<String,
     @Override
     public String getFromStore(String dbName, String key) {
         String result = null;
-        Transaction tx = null;
+        Transaction txn = null;
         try {
-            tx = this.myDbEnvironment.beginTransaction(null, null);
+            txn = this.myDbEnvironment.beginTransaction(null, null);
             DatabaseEntry theKey = new DatabaseEntry(
                     key.getBytes(StandardCharsets.UTF_8));
             DatabaseEntry theData = new DatabaseEntry();
@@ -94,10 +97,11 @@ public class BerkeleyDataStore extends Logs implements KeyValueDataStore<String,
             } else {
                 logger.info("No record found for key {}", key);
             }
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.abort();
+
+            txn.commit();
+        } catch (final Exception e) {
+            if (Objects.nonNull(txn)) {
+                txn.abort();
             }
             logger.error("从数据库{}中读取:{}, 出现lock异常", new String[]{dbName, key}, e);
         }
@@ -110,9 +114,9 @@ public class BerkeleyDataStore extends Logs implements KeyValueDataStore<String,
 
     @Override
     public void deleteFromStore(String dbName, String key) {
-        Transaction tx = null;
+        Transaction txn = null;
         try {
-            tx = this.myDbEnvironment.beginTransaction(null, null);
+            txn = this.myDbEnvironment.beginTransaction(null, null);
             DatabaseEntry theKey = new DatabaseEntry(
                     key.getBytes(StandardCharsets.UTF_8));
             OperationStatus res = myDatabase.delete(null, theKey);
@@ -123,10 +127,11 @@ public class BerkeleyDataStore extends Logs implements KeyValueDataStore<String,
             } else {
                 logger.info("删除操作失败, 由于{}", res.toString());
             }
-            tx.commit();
-        } catch (Exception e) {
-            if (tx != null) {
-                tx.abort();
+
+            txn.commit();
+        } catch (final Exception e) {
+            if (Objects.nonNull(txn)) {
+                txn.abort();
             }
             logger.error("从数据库中 {} 删除数据 {} 失败, 出现错误", new String[]{dbName, key}, e);
         }
@@ -134,10 +139,11 @@ public class BerkeleyDataStore extends Logs implements KeyValueDataStore<String,
 
     public void closeConnection() {
         try {
-            if (myDatabase != null) {
+            if (Objects.nonNull(myDatabase)) {
                 myDatabase.close();
             }
-            if (myDbEnvironment != null) {
+
+            if (Objects.nonNull(myDbEnvironment)) {
                 myDbEnvironment.cleanLog();
                 myDbEnvironment.close();
             }

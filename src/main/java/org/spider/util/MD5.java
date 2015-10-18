@@ -1,7 +1,9 @@
 package org.spider.util;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.function.Function;
 
 /**
  * Created on 2015-10-12.
@@ -10,57 +12,37 @@ import java.security.NoSuchAlgorithmException;
  */
 public class MD5 {
 
-    private String md5;
+    /**
+     * <p>用来将字节转换成十六进制表示的字符.
+     */
+    static final char[] hexDigests = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
-
-    private MD5(String value, String salt) {
-        this.md5 = generateMD5(value + "{" + salt + "}");
-    }
-
-    private String generateMD5(String plainText) {
+    static final Function<String, String> md5Function = source -> {
+        String md5 = null;
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(plainText.getBytes());
-            byte b[] = md.digest();
-            int i;
-            StringBuilder buf = new StringBuilder("");
-            for (byte aB : b) {
-                i = aB;
-                if (i < 0)
-                    i += 256;
-                if (i < 16)
-                    buf.append("0");
-                buf.append(Integer.toHexString(i));
+            md.update(source.getBytes(StandardCharsets.UTF_8));
+            byte tmp[] = md.digest();
+
+            char chars[] = new char[32];
+
+            int index = 0;
+            for (int i = 0; i < 16; i++) {
+                byte byte0 = tmp[i];
+                chars[index++] = hexDigests[byte0 >>> 4 & 0xf];
+                chars[index++] = hexDigests[byte0 & 0xf];
             }
-            md5 = buf.toString();
-            return md5;
+
+            md5 = new String(chars);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            return null;
         }
-    }
 
-    private String getMD5() {
         return md5;
-    }
+    };
 
-    public static class Builder {
 
-        private String value;
-        private String salt;
-
-        public Builder value(String value) {
-            this.value = value;
-            return this;
-        }
-
-        public Builder salt(String salt) {
-            this.salt = salt;
-            return this;
-        }
-
-        public String build() {
-            return new MD5(value, salt).getMD5();
-        }
+    public static String getMD5(String source) {
+        return md5Function.apply(source);
     }
 }

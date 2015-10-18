@@ -1,7 +1,7 @@
 package org.spider.filter.simhash;
 
 import org.nlpcn.commons.lang.finger.FingerprintService;
-import org.spider.bdb.BerkeleyDataStore;
+import org.spider.scheduler.bdb.BerkeleyDataStore;
 import org.spider.filter.IFilter;
 import org.spider.util.Logs;
 

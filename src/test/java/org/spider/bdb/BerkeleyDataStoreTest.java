@@ -64,11 +64,7 @@ public class BerkeleyDataStoreTest {
 
         // WRITE
         DatabaseEntry theKey = new DatabaseEntry(
-                new MD5.Builder()
-                        .value(task.getUrl())
-                        .salt(task.getCharset())
-                        .build()
-                        .getBytes(StandardCharsets.UTF_8));
+                MD5.getMD5(task.getUrl() + "-" + task.getCharset()).getBytes(StandardCharsets.UTF_8));
 
         DatabaseEntry theData = new DatabaseEntry();
         dataBinding.objectToEntry(task, theData);
@@ -82,7 +78,7 @@ public class BerkeleyDataStoreTest {
         myDatabase.get(null, theKey, theData, LockMode.DEFAULT);
 
         Task _task = dataBinding.entryToObject(theData);
-        System.out.println();
+        System.out.println("url: " + _task.getUrl() + "charset: " + _task.getCharset());
     }
 
     public void findAll() {

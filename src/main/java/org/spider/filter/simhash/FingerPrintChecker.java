@@ -1,7 +1,7 @@
 package org.spider.filter.simhash;
 
 import com.google.common.base.Strings;
-import org.spider.bdb.BerkeleyDataStore;
+import org.spider.scheduler.bdb.BerkeleyDataStore;
 
 /**
  * Created on 2015-08-29.

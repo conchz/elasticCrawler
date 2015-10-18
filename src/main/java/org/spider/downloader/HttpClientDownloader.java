@@ -39,7 +39,7 @@ public class HttpClientDownloader extends Logs implements Downloader {
         CookieStore cookieStore = new BasicCookieStore();
         HttpContext localContext = new BasicHttpContext();
         localContext.setAttribute(HttpClientContext.COOKIE_STORE, cookieStore);
-        logger.debug("Downloading url: {}", task.getUrl());
+        logger.info("Downloading url: {}", task.getUrl());
         try (CloseableHttpResponse response = httpClient.execute(new HttpGet(task.getUrl()), localContext)) {
             return EntityUtils.toString(response.getEntity(), Charset.forName(task.getCharset()));
         }

@@ -1,12 +1,12 @@
 package org.spider.filter.simhash;
 
-import org.spider.util.Logs;
-import org.spider.util.RegexLanguageUtils;
 import org.nlpcn.commons.lang.dic.DicManager;
 import org.nlpcn.commons.lang.tire.GetWord;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.library.Library;
 import org.nlpcn.commons.lang.util.StringUtil;
+import org.spider.util.Logs;
+import org.spider.util.RegexLanguageUtils;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -59,14 +59,14 @@ public class SimHash extends Logs {
         // 定义特征向量/数组
         int[] v = new int[this.hashbits];
         this.tokens = StringUtil.rmHtmlTag(this.tokens);
-        String temp;
+        String tmp;
 
         // 英文处理
         if (RegexLanguageUtils.INSTANCE.isEnglish(this.tokens)) {
             StringTokenizer stringTokens = new StringTokenizer(this.tokens);
             while (stringTokens.hasMoreTokens()) {
-                temp = stringTokens.nextToken();
-                BigInteger t = this.hash(temp);
+                tmp = stringTokens.nextToken();
+                BigInteger t = this.hash(tmp);
                 for (int i = 0; i < this.hashbits; i++) {
                     BigInteger bitmask = new BigInteger("1").shiftLeft(i);
                     if (t.and(bitmask).signum() != 0) {
@@ -80,13 +80,13 @@ public class SimHash extends Logs {
         // 中文处理
         else {
             GetWord word = new GetWord(forest, this.tokens);
-            while ((temp = word.getFrontWords()) != null) {
-                if (temp != null && temp.length() == 0) {
+            while ((tmp = word.getFrontWords()) != null) {
+                if (tmp.isEmpty()) {
                     continue;
                 }
-                temp = temp.toLowerCase();
+                tmp = tmp.toLowerCase();
 
-                BigInteger t = this.hash(temp);
+                BigInteger t = this.hash(tmp);
                 for (int i = 0; i < this.hashbits; i++) {
                     BigInteger bitmask = new BigInteger("1").shiftLeft(i);
                     // 3、建立一个长度为64的整数数组(假设要生成64位的数字指纹,也可以是其它数字),
@@ -115,14 +115,13 @@ public class SimHash extends Logs {
     }
 
     private BigInteger hash(String source) {
-        if (source == null || source.length() == 0) {
+        if (source == null || source.isEmpty()) {
             return new BigInteger("0");
         } else {
             char[] sourceArray = source.toCharArray();
             BigInteger x = BigInteger.valueOf(((long) sourceArray[0]) << 7);
             BigInteger m = new BigInteger("1000003");
-            BigInteger mask = new BigInteger("2").pow(this.hashbits).subtract(
-                    new BigInteger("1"));
+            BigInteger mask = new BigInteger("2").pow(this.hashbits).subtract(new BigInteger("1"));
             for (char item : sourceArray) {
                 BigInteger temp = BigInteger.valueOf((long) item);
                 x = x.multiply(m).xor(temp).and(mask);
@@ -131,6 +130,7 @@ public class SimHash extends Logs {
             if (x.equals(new BigInteger("-1"))) {
                 x = new BigInteger("-2");
             }
+
             return x;
         }
     }
@@ -147,6 +147,7 @@ public class SimHash extends Logs {
             tot += 1;
             x = x.and(x.subtract(new BigInteger("1")));
         }
+
         return tot;
     }
 
@@ -156,12 +157,13 @@ public class SimHash extends Logs {
             distance = -1;
         } else {
             distance = 0;
-            for (int i = 0; i < str1.length(); i++) {
+            for (int i = 0, l = str1.length(); i < l; i++) {
                 if (str1.charAt(i) != str2.charAt(i)) {
                     distance++;
                 }
             }
         }
+
         return distance;
     }
 
@@ -180,6 +182,7 @@ public class SimHash extends Logs {
             } else {
                 buffer.append("0");
             }
+
             if ((i + 1) % numEach == 0) {
                 // 将二进制转为BigInteger
                 BigInteger eachValue = new BigInteger(buffer.toString(), 2);
