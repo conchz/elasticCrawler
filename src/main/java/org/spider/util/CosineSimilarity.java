@@ -22,8 +22,8 @@ public class CosineSimilarity {
      */
     public static Double cosSimilarityByFile(String firstFile, String secondFile) {
         try {
-            Map<String, Map<String, Integer>> firstTfMap = TfIdf.wordSegCount(firstFile);
-            Map<String, Map<String, Integer>> secondTfMap = TfIdf.wordSegCount(secondFile);
+            Map<String, Map<String, Integer>> firstTfMap = TfIdf.wordSegmentCount(firstFile);
+            Map<String, Map<String, Integer>> secondTfMap = TfIdf.wordSegmentCount(secondFile);
 
             if (firstTfMap == null || firstTfMap.size() == 0) {
                 throw new IllegalArgumentException("firstFile not found or firstFile is empty! ");
@@ -35,9 +35,9 @@ public class CosineSimilarity {
             Map<String, Integer> firstWords = firstTfMap.get(firstFile);
             Map<String, Integer> secondWords = secondTfMap.get(secondFile);
             if (firstWords.size() < secondWords.size()) {
-                Map<String, Integer> temp = firstWords;
+                Map<String, Integer> tmp = firstWords;
                 firstWords = secondWords;
-                secondWords = temp;
+                secondWords = tmp;
             }
             return calculateCos((LinkedHashMap<String, Integer>) firstWords, (LinkedHashMap<String, Integer>) secondWords);
 
@@ -57,8 +57,8 @@ public class CosineSimilarity {
      */
     public static Double cosSimilarityByString(String first, String second) {
         try {
-            Map<String, Integer> firstTfMap = TfIdf.segStr(first);
-            Map<String, Integer> secondTfMap = TfIdf.segStr(second);
+            Map<String, Integer> firstTfMap = TfIdf.segmentPlaintext(first);
+            Map<String, Integer> secondTfMap = TfIdf.segmentPlaintext(second);
             if (firstTfMap.size() < secondTfMap.size()) {
                 Map<String, Integer> temp = firstTfMap;
                 firstTfMap = secondTfMap;
@@ -89,7 +89,7 @@ public class CosineSimilarity {
         double vectorSecondModulo = 0.00;   // 向量2的模
         double vectorProduct = 0.00;        // 向量积
         int secondSize = second.size();
-        for (int i = 0; i < firstList.size(); i++) {
+        for (int i = 0, s = firstList.size(); i < s; i++) {
             if (i < secondSize) {
                 vectorSecondModulo += secondList.get(i).getValue().doubleValue() * secondList.get(i).getValue().doubleValue();
                 vectorProduct += firstList.get(i).getValue().doubleValue() * secondList.get(i).getValue().doubleValue();
@@ -104,6 +104,6 @@ public class CosineSimilarity {
         Double result = cosSimilarityByString("Scala可伸缩的语言是一门多范式的编程语言，一种类似java的编程语言，设计初衷是要集成面向对象编程和函数式编程的各种特性。",
                 "Scala编程语言抓住了很多开发者的眼球。如果你粗略浏览Scala的网站，你会觉得Scala是一种纯粹的面向对象编程语言，而又无缝地结合了命令式和函数式的编程风格。");
 
-        System.out.println(result);
+        System.out.println("Similarity: " + result);
     }
 }
