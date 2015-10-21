@@ -73,16 +73,18 @@ public class Task implements Serializable {
         return downloader;
     }
 
-    public void setDownloader(Downloader downloader) {
+    public Task setDownloader(Downloader downloader) {
         this.downloader = downloader;
+        return this;
     }
 
     public Extractor getExtractor() {
         return extractor;
     }
 
-    public void setExtractor(Extractor extractor) {
+    public Task setExtractor(Extractor extractor) {
         this.extractor = extractor;
+        return this;
     }
 
 }
